@@ -1,0 +1,23 @@
+{
+  "name": "docube",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "uniorg": "^1.2.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@effect/platform": "^0.60.2",
+    "@effect/platform-bun": "^0.40.2",
+    "@effect/schema": "^0.69.2",
+    "effect": "^3.5.8",
+    "rehype-stringify": "^10.0.0",
+    "unified": "^11.0.5",
+    "uniorg-extract-keywords": "^1.0.1",
+    "uniorg-parse": "^3.0.1",
+    "uniorg-rehype": "^1.2.0"
+  }
+}
