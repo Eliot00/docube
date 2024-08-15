@@ -1,0 +1,26 @@
+{
+  "name": "docube",
+  "version": "0.2.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "scripts": {
+    "build": "bun run build.mjs",
+    "lint": "eslint . --max-warnings 0"
+  },
+  "devDependencies": {
+    "@docube/eslint-config": "*",
+    "@docube/typescript-config": "*",
+    "@types/bun": "latest",
+    "bun-plugin-dts": "^0.2.3",
+    "eslint": "^9.9.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "effect": "^3.6.4"
+  }
+}
