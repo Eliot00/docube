@@ -1,24 +1,26 @@
 /* SPDX-License-Identifier: AGPL-3.0-or-later */
 
-import { Context, Data, Effect } from 'effect'
+import { Context, Data, Effect } from "effect";
 
-export class ResourceDefinition extends Context.Tag("DocubeResourceDefinitionService")<
+export class ResourceDefinition extends Context.Tag(
+  "DocubeResourceDefinitionService",
+)<
   ResourceDefinition,
   {
-      readonly define: Effect.Effect<{
-          readonly cwd: string
-          readonly globPattern: string
-      }>
+    readonly define: Effect.Effect<{
+      readonly cwd: string;
+      readonly globPattern: string;
+    }>;
   }
 >() {}
 
 export type FileLike = {
-    readonly path: string
-    text(): Promise<string>
-}
+  readonly path: string;
+  text(): Promise<string>;
+};
 
 export class DocubeError extends Data.TaggedError("Docube")<{
-    message: string
+  message: string;
 }> {}
 
 export class Resource extends Context.Tag("DocubeResourceService")<
@@ -30,4 +32,3 @@ export class Transformer extends Context.Tag("DocubeTransformerService")<
   Transformer,
   { readonly transform: Effect.Effect<void, DocubeError> }
 >() {}
-
