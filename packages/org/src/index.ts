@@ -1,44 +1,50 @@
 /* SPDX-License-Identifier: AGPL-3.0-or-later */
 
-import { Resource, Transformer } from "docube";
+import { Resource, Transformer, Unified, NameNormalization, DocubeError } from "docube";
 import { Layer, Effect, Either } from "effect";
 import { AST, Schema } from "@effect/schema";
 import { glob } from "glob";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { unified } from "unified";
-import parse from "uniorg-parse";
-import uniorg2rehype from "uniorg-rehype";
-import stringify from "rehype-stringify";
-import extractKeywords from "uniorg-extract-keywords";
+import { type Pluggable } from "unified";
 import camelCase from "camelcase";
 import pluralize from "pluralize-esm";
 
-const processor = unified()
-  .use(parse)
-  .use(extractKeywords)
-  .use(uniorg2rehype)
-  .use(stringify);
+import { makeUnifiedLive } from "./unified";
 
-const process = (content: string) =>
-  Effect.promise(() => processor.process(content));
+export const NameNormalizationLive = Layer.succeed(
+    NameNormalization,
+    NameNormalization.of({
+        normalize: (name) => {
+            const capital = camelCase(name, { pascalCase: true })
+            const camel = camelCase(name)
+            return Effect.succeed({
+                typeName: capital,
+                moduleName: pluralize(camel),
+                variableName: `all${pluralize(capital)}`
+            })
+        }
+    })
+)
 
-export type DocumentDefinition = {
+export type MakeOptions = {
   readonly name: string;
   readonly directory: string;
   readonly includes: string;
   readonly fields: Schema.Struct.Fields;
   readonly outputBaseDir?: string;
+  readonly rehypePlugins?: Pluggable[]
 };
 
-export function make(def: DocumentDefinition) {
+export function make(options: MakeOptions) {
   const {
     name,
     directory,
     includes,
     fields,
     outputBaseDir = ".docube/generated",
-  } = def;
+    rehypePlugins = [],
+  } = options;
   const ResourceLive = Layer.effect(
     Resource,
     Effect.gen(function* () {
@@ -64,13 +70,14 @@ export function make(def: DocumentDefinition) {
     Transformer,
     Effect.gen(function* () {
       const resource = yield* Resource;
+      const unified = yield* Unified;
+      const nameNormalization = yield* NameNormalization;
       return {
         transform: Effect.gen(function* () {
           const files = yield* resource.load;
 
-          const camelCaseName = camelCase(name);
-          const pluralizedName = pluralize(camelCaseName);
-          const outputDir = path.join(outputBaseDir, pluralizedName);
+          const { moduleName, variableName, typeName } = yield* nameNormalization.normalize(name)
+          const outputDir = path.join(outputBaseDir, moduleName);
           yield* Effect.promise(() => fs.mkdir(outputDir, { recursive: true }));
 
           const imports = files
@@ -85,8 +92,7 @@ export function make(def: DocumentDefinition) {
             const baseName = path.basename(file.path, extName);
             return camelCase(baseName);
           });
-          const exportName = camelCase(["all", pluralizedName]);
-          const exportLine = `export const ${exportName} = [${identifiers.join(",")}]`;
+          const exportLine = `export const ${variableName} = [${identifiers.join(",")}]`;
           const script = `${imports}\n\n${exportLine}`;
           yield* Effect.promise(() =>
             fs.writeFile(path.join(outputDir, "index.mjs"), script, {
@@ -95,7 +101,7 @@ export function make(def: DocumentDefinition) {
           );
 
           const parent = path.join(outputBaseDir, "index.mjs");
-          const parentExport = `\nexport { ${exportName} } from './${pluralizedName}'`;
+          const parentExport = `\nexport { ${variableName} } from './${moduleName}'`;
           yield* Effect.promise(() =>
             fs.appendFile(parent, parentExport, { encoding: "utf-8" }),
           );
@@ -110,8 +116,7 @@ export function make(def: DocumentDefinition) {
             }),
           });
           const dtsPath = path.join(outputBaseDir, "index.d.ts");
-          const typeName = camelCase(name, { pascalCase: true });
-          const defineStatement = `\ntype ${typeName} = ${AST.encodedAST(schema.ast).toString()}\nexport declare const ${exportName}: ${typeName}[]`;
+          const defineStatement = `\ntype ${typeName} = ${AST.encodedAST(schema.ast).toString()}\nexport declare const ${variableName}: ${typeName}[]`;
           yield* Effect.promise(() =>
             fs.appendFile(dtsPath, defineStatement, { encoding: "utf-8" }),
           );
@@ -120,7 +125,7 @@ export function make(def: DocumentDefinition) {
             files.map((file) =>
               Effect.gen(function* () {
                 const content = yield* Effect.promise(file.text);
-                const vFile = yield* process(content);
+                const vFile = yield* unified.process(content);
                 const extName = path.extname(file.path);
                 const baseName = path.basename(file.path, extName);
                 const rawOutput = {
@@ -135,6 +140,7 @@ export function make(def: DocumentDefinition) {
                 const decodeResult =
                   Schema.decodeUnknownEither(schema)(rawOutput);
                 if (Either.isLeft(decodeResult)) {
+                  yield* new DocubeError({ message: decodeResult.left.message })
                   return;
                 }
 
@@ -154,7 +160,8 @@ export function make(def: DocumentDefinition) {
     }),
   );
 
-  const MainLive = TransformerLive.pipe(Layer.provide(ResourceLive));
+  const UnifiedLive = makeUnifiedLive({ rehypePlugins })
+  const MainLive = TransformerLive.pipe(Layer.provide(ResourceLive), Layer.provide(UnifiedLive), Layer.provide(NameNormalizationLive));
 
   const program = Effect.gen(function* () {
     const transformer = yield* Transformer;
@@ -165,3 +172,5 @@ export function make(def: DocumentDefinition) {
 
   Effect.runPromise(runable).then(console.log, console.error);
 }
+
+export { makeUnifiedLive }
