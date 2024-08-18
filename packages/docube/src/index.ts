@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: AGPL-3.0-or-later */
 
 import { Context, Data, Effect } from "effect";
-import type { VFile } from 'vfile'
+import type { VFile } from "vfile";
 
 export class ResourceDefinition extends Context.Tag(
   "DocubeResourceDefinitionService",
@@ -40,12 +40,14 @@ export class Unified extends Context.Tag("DocubeUnifiedService")<
 >() {}
 
 export type NormalizedName = {
-    typeName: string
-    moduleName: string
-    variableName: string
-}
+  typeName: string;
+  moduleName: string;
+  variableName: string;
+};
 
-export class NameNormalization extends Context.Tag("DocubeNameNormalizationService")<
+export class NameNormalization extends Context.Tag(
+  "DocubeNameNormalizationService",
+)<
   NameNormalization,
   { readonly normalize: (name: string) => Effect.Effect<NormalizedName> }
 >() {}

@@ -1,6 +1,12 @@
 /* SPDX-License-Identifier: AGPL-3.0-or-later */
 
-import { Resource, Transformer, Unified, NameNormalization, DocubeError } from "docube";
+import {
+  Resource,
+  Transformer,
+  Unified,
+  NameNormalization,
+  DocubeError,
+} from "docube";
 import { Layer, Effect, Either } from "effect";
 import { AST, Schema } from "@effect/schema";
 import { glob } from "glob";
@@ -13,19 +19,19 @@ import pluralize from "pluralize-esm";
 import { makeUnifiedLive } from "./unified";
 
 export const NameNormalizationLive = Layer.succeed(
-    NameNormalization,
-    NameNormalization.of({
-        normalize: (name) => {
-            const capital = camelCase(name, { pascalCase: true })
-            const camel = camelCase(name)
-            return Effect.succeed({
-                typeName: capital,
-                moduleName: pluralize(camel),
-                variableName: `all${pluralize(capital)}`
-            })
-        }
-    })
-)
+  NameNormalization,
+  NameNormalization.of({
+    normalize: (name) => {
+      const capital = camelCase(name, { pascalCase: true });
+      const camel = camelCase(name);
+      return Effect.succeed({
+        typeName: capital,
+        moduleName: pluralize(camel),
+        variableName: `all${pluralize(capital)}`,
+      });
+    },
+  }),
+);
 
 export type MakeOptions = {
   readonly name: string;
@@ -33,7 +39,7 @@ export type MakeOptions = {
   readonly includes: string;
   readonly fields: Schema.Struct.Fields;
   readonly outputBaseDir?: string;
-  readonly rehypePlugins?: Pluggable[]
+  readonly rehypePlugins?: Pluggable[];
 };
 
 export function make(options: MakeOptions) {
@@ -76,7 +82,8 @@ export function make(options: MakeOptions) {
         transform: Effect.gen(function* () {
           const files = yield* resource.load;
 
-          const { moduleName, variableName, typeName } = yield* nameNormalization.normalize(name)
+          const { moduleName, variableName, typeName } =
+            yield* nameNormalization.normalize(name);
           const outputDir = path.join(outputBaseDir, moduleName);
           yield* Effect.promise(() => fs.mkdir(outputDir, { recursive: true }));
 
@@ -140,7 +147,9 @@ export function make(options: MakeOptions) {
                 const decodeResult =
                   Schema.decodeUnknownEither(schema)(rawOutput);
                 if (Either.isLeft(decodeResult)) {
-                  yield* new DocubeError({ message: decodeResult.left.message })
+                  yield* new DocubeError({
+                    message: decodeResult.left.message,
+                  });
                   return;
                 }
 
@@ -160,8 +169,12 @@ export function make(options: MakeOptions) {
     }),
   );
 
-  const UnifiedLive = makeUnifiedLive({ rehypePlugins })
-  const MainLive = TransformerLive.pipe(Layer.provide(ResourceLive), Layer.provide(UnifiedLive), Layer.provide(NameNormalizationLive));
+  const UnifiedLive = makeUnifiedLive({ rehypePlugins });
+  const MainLive = TransformerLive.pipe(
+    Layer.provide(ResourceLive),
+    Layer.provide(UnifiedLive),
+    Layer.provide(NameNormalizationLive),
+  );
 
   const program = Effect.gen(function* () {
     const transformer = yield* Transformer;
@@ -173,4 +186,4 @@ export function make(options: MakeOptions) {
   Effect.runPromise(runable).then(console.log, console.error);
 }
 
-export { makeUnifiedLive }
+export { makeUnifiedLive };

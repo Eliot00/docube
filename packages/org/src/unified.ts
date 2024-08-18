@@ -7,21 +7,21 @@ import { Effect, Layer } from "effect";
 import { Unified } from "docube";
 
 export type Options = {
-    rehypePlugins?: Pluggable[]
-}
+  rehypePlugins?: Pluggable[];
+};
 
 export function makeUnifiedLive(options?: Options) {
-    const builder = unified().use(parse).use(extractKeywords).use(uniorg2rehype)
-    if (options?.rehypePlugins) {
-        builder().use(options.rehypePlugins)
-    }
+  const builder = unified().use(parse).use(extractKeywords).use(uniorg2rehype);
+  if (options?.rehypePlugins) {
+    builder().use(options.rehypePlugins);
+  }
 
-    return Layer.succeed(
-        Unified,
-        Unified.of({
-            process(content) {
-                return Effect.promise(() => builder().use(stringify).process(content))
-            },
-        })
-    )
+  return Layer.succeed(
+    Unified,
+    Unified.of({
+      process(content) {
+        return Effect.promise(() => builder().use(stringify).process(content));
+      },
+    }),
+  );
 }

@@ -1,0 +1,23 @@
+{
+  "extends": "@docube/typescript-config/nextjs.json",
+  "compilerOptions": {
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./*"],
+      "@docube/generated": ["./.docube/generated"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "next.config.mjs",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "generate.ts"
+  ],
+  "exclude": ["node_modules"]
+}
