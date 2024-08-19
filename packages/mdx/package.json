@@ -1,6 +1,6 @@
 {
-  "name": "docube",
-  "version": "0.2.0",
+  "name": "@docube/mdx",
+  "version": "0.1.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -16,14 +16,25 @@
     "@docube/eslint-config": "workspace:*",
     "@docube/typescript-config": "workspace:*",
     "@types/bun": "latest",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
     "bun-plugin-dts": "^0.2.3",
     "eslint": "^9.9.0",
+    "unified": "^11.0.5",
     "vfile": "^6.0.2"
   },
   "peerDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "dependencies": {
-    "effect": "^3.6.4"
+    "@effect/schema": "^0.71.0",
+    "camelcase": "^8.0.0",
+    "docube": "*",
+    "effect": "^3.6.4",
+    "glob": "^11.0.0",
+    "mdx-bundler": "^10.0.3",
+    "pluralize-esm": "^9.0.5"
   }
 }

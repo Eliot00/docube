@@ -16,8 +16,8 @@
     "lint": "eslint . --max-warnings 0"
   },
   "devDependencies": {
-    "@docube/eslint-config": "*",
-    "@docube/typescript-config": "*",
+    "@docube/eslint-config": "workspace:*",
+    "@docube/typescript-config": "workspace:*",
     "@types/bun": "latest",
     "@types/node": "^22.3.0",
     "bun-plugin-dts": "^0.2.3",
@@ -25,7 +25,7 @@
     "uniorg": "^1.2.0"
   },
   "dependencies": {
-    "docube": "*",
+    "docube": "workspace:*",
     "@effect/schema": "^0.71.0",
     "camelcase": "^8.0.0",
     "effect": "^3.6.4",
