@@ -26,7 +26,6 @@
   },
   "dependencies": {
     "@docube/common": "workspace:*",
-    "@effect/schema": "^0.71.0",
     "docube": "workspace:*",
     "effect": "^3.6.4",
     "rehype-stringify": "^10.0.0",

@@ -16,8 +16,6 @@
     "@docube/eslint-config": "workspace:*",
     "@docube/typescript-config": "workspace:*",
     "@types/bun": "latest",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
     "bun-plugin-dts": "^0.2.3",
     "eslint": "^9.9.0"
   },
