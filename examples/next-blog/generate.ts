@@ -1,12 +1,11 @@
-import { make } from "@docube/org";
-import { Schema } from "@effect/schema";
+import { transform } from "@docube/org";
 
-make({
+transform({
   name: "Post",
   directory: "content",
-  includes: "**/*.org",
-  fields: {
-    title: Schema.String,
-    date: Schema.String,
-  },
+  include: "**/*.org",
+  fields: (s) => ({
+    title: s.String,
+    date: s.String,
+  }),
 });

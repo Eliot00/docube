@@ -1,5 +1,5 @@
 {
-  "name": "@docube/org",
+  "name": "@docube/common",
   "version": "0.1.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -8,9 +8,6 @@
   ],
   "license": "AGPL-3.0-or-later",
   "type": "module",
-  "publishConfig": {
-    "access": "public"
-  },
   "scripts": {
     "build": "bun run build.mjs",
     "lint": "eslint . --max-warnings 0"
@@ -19,20 +16,20 @@
     "@docube/eslint-config": "workspace:*",
     "@docube/typescript-config": "workspace:*",
     "@types/bun": "latest",
-    "@types/node": "^22.3.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
     "bun-plugin-dts": "^0.2.3",
-    "eslint": "^9.9.0",
-    "uniorg": "^1.2.0"
+    "eslint": "^9.9.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@docube/common": "workspace:*",
-    "@effect/schema": "^0.71.0",
+    "@effect/schema": "^0.71.1",
+    "camelcase": "^8.0.0",
     "docube": "workspace:*",
-    "effect": "^3.6.4",
-    "rehype-stringify": "^10.0.0",
-    "unified": "^11.0.5",
-    "uniorg-extract-keywords": "^1.0.1",
-    "uniorg-parse": "^3.0.1",
-    "uniorg-rehype": "^1.2.0"
+    "effect": "^3.6.5",
+    "glob": "^11.0.0",
+    "pluralize-esm": "^9.0.5"
   }
 }
