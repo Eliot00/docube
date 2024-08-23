@@ -10,6 +10,7 @@
     "prepare": "husky"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.27.7",
     "@types/bun": "latest",
     "husky": "^9.1.5",
     "lint-staged": "^15.2.9",

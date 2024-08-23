@@ -1,6 +1,9 @@
 {
   "name": "@docube/common",
-  "version": "0.2.0",
+  "version": "0.2.1",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
