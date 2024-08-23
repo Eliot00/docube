@@ -2,7 +2,6 @@
 
 import { Context, Effect } from "effect";
 import type { VFile } from "vfile";
-import { Schema } from "@effect/schema";
 
 import { DocubeError } from "./error";
 import type { FileLike } from "./io";

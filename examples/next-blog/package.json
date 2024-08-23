@@ -5,8 +5,7 @@
   "scripts": {
     "dev": "rimraf .docube && bun run generate.ts && next dev",
     "build": "rimraf .docube && bun run generate.ts && next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "next start"
   },
   "dependencies": {
     "date-fns": "^3.6.0",
@@ -15,8 +14,8 @@
     "react-dom": "^18"
   },
   "devDependencies": {
-    "@docube/org": "workspace:*",
-    "@docube/typescript-config": "workspace:*",
+    "@docube/org": "*",
+    "@docube/typescript-config": "*",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

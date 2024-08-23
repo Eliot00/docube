@@ -1,35 +1,33 @@
-const { resolve } = require("node:path");
+import baseConfig from "./eslint.base.config.js";
+import globals from "globals";
+import next from "@next/eslint-plugin-next";
+import { fixupConfigRules } from "@eslint/compat";
+import flatCompat from "./compat.js";
 
-const project = resolve(process.cwd(), "tsconfig.json");
+const nextConfig = /** @type {import("eslint").Linter.Config[]} */ (
+  fixupConfigRules(
+    /** @type {import("@eslint/compat").FixupConfigArray} */
+    (flatCompat.config(next.configs["core-web-vitals"]))
+  )
+);
 
-/** @type {import("eslint").Linter.Config} */
-module.exports = {
-  extends: [
-    "eslint:recommended",
-    "prettier",
-    require.resolve("@vercel/style-guide/eslint/next"),
-    "turbo",
-  ],
-  globals: {
-    React: true,
-    JSX: true,
-  },
-  env: {
-    node: true,
-    browser: true,
-  },
-  plugins: ["only-warn"],
-  settings: {
-    "import/resolver": {
-      typescript: {
-        project,
-      },
+/** @type {import("eslint").Linter.Config[]} */
+export default [
+  ...baseConfig,
+  ...nextConfig,
+  {
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        ...globals.browser,
+        React: true,
+        JSX: true
+      }
     },
-  },
-  ignorePatterns: [
-    // Ignore dotfiles
-    ".*.js",
-    "node_modules/",
-  ],
-  overrides: [{ files: ["*.js?(x)", "*.ts?(x)"] }],
-};
+    rules: {
+      "@typescript-eslint/array-type": "off",
+      "@typescript-eslint/consistent-type-definitions": "off",
+      "@typescript-eslint/no-empty-function": "off"
+    }
+  }
+];

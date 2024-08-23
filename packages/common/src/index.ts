@@ -82,23 +82,21 @@ export const NameNormalizationLive = Layer.succeed(
   }),
 );
 
-export const WriterLive = Layer.effect(
+export const WriterLive = Layer.succeed(
   Writer,
-  Effect.gen(function* () {
-    return {
-      write: (file) =>
-        Effect.gen(function* () {
-          const {
-            _meta: { fileName, directory },
-          } = file;
-          const targetPath = path.join(directory, fileName);
-          const text = yield* file.text;
+  Writer.of({
+    write: (file) =>
+      Effect.gen(function* () {
+        const {
+          _meta: { fileName, directory },
+        } = file;
+        const targetPath = path.join(directory, fileName);
+        const text = yield* file.text;
 
-          yield* Effect.promise(() =>
-            fs.writeFile(targetPath, text, { encoding: "utf-8" }),
-          );
-        }),
-    };
+        yield* Effect.promise(() =>
+          fs.writeFile(targetPath, text, { encoding: "utf-8" }),
+        );
+      }),
   }),
 );
 
