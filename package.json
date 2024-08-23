@@ -5,7 +5,7 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
-    "lint": "turbo lint",
+    "lint": "turbo lint --",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "prepare": "husky"
   },
@@ -24,6 +24,6 @@
     "examples/*"
   ],
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": ["bun run format", "bun run lint"]
+    "*.{js,jsx,ts,tsx}": ["bunx prettier --write", "npx run lint"]
   }
 }
