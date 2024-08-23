@@ -6,10 +6,13 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@types/bun": "latest",
+    "husky": "^9.1.5",
+    "lint-staged": "^15.2.9",
     "prettier": "3.3.3",
     "turbo": "^2.0.13",
     "typescript": "^5.4.5"
@@ -18,5 +21,8 @@
   "workspaces": [
     "packages/*",
     "examples/*"
-  ]
+  ],
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": ["bun run format", "bun run lint"]
+  }
 }
