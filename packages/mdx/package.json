@@ -1,6 +1,6 @@
 {
   "name": "@docube/mdx",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public"
   },
@@ -28,13 +28,14 @@
   },
   "peerDependencies": {
     "typescript": "^5.0.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react": "^18.0.0",
+    "react-dom": "^18.2.0"
   },
   "dependencies": {
     "@docube/common": "*",
     "docube": "*",
     "effect": "^3.6.4",
+    "esbuild": "^0.23.1",
     "mdx-bundler": "^10.0.3"
   }
 }

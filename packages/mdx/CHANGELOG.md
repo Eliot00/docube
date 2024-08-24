@@ -1,5 +1,11 @@
 # @docube/mdx
 
+## 0.1.2
+
+### Patch Changes
+
+- Fix the problem of missing classes after bundle
+
 ## 0.1.1
 
 ### Patch Changes

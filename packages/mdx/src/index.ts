@@ -35,6 +35,7 @@ export function makeMdxConverter(options: MdxBundleOptions) {
           const { code, frontmatter } = yield* Effect.promise(() =>
             bundleMDX({
               source,
+              files: {},
               mdxOptions(opt) {
                 opt.remarkPlugins = [
                   ...(opt.remarkPlugins ?? []),
@@ -45,6 +46,14 @@ export function makeMdxConverter(options: MdxBundleOptions) {
                   ...(options.rehypePlugins ?? []),
                 ];
                 return opt;
+              },
+              esbuildOptions(options) {
+                if (!options.define) {
+                  options.define = {};
+                }
+                const env = process.env.NODE_ENV ?? "production";
+                options.define["process.env.NODE_ENV"] = JSON.stringify(env);
+                return options;
               },
             }),
           );
