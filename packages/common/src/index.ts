@@ -10,6 +10,7 @@ import {
   ContentConverter,
   ContentValidator,
   type UserConfig,
+  DocubeError,
 } from "docube";
 import { Effect, Layer } from "effect";
 import { glob } from "glob";
@@ -18,6 +19,44 @@ import camelCase from "camelcase";
 import pluralize from "pluralize-esm";
 import path from "node:path";
 import { AST, Schema } from "@effect/schema";
+
+export type TransformerDependencies = {
+  loader: Layer.Layer<Loader, DocubeError>;
+  fileConverter: Layer.Layer<FileConverter, DocubeError>;
+  moduleResolver: Layer.Layer<ModuleResolver, DocubeError>;
+  writer: Layer.Layer<Writer, DocubeError>;
+};
+
+export function makeTransformer(deps: TransformerDependencies) {
+  const { loader, fileConverter, moduleResolver, writer } = deps;
+
+  return transformerMain.pipe(
+    Effect.provide(loader),
+    Effect.provide(fileConverter),
+    Effect.provide(moduleResolver),
+    Effect.provide(writer),
+  );
+}
+
+export const transformerMain = Effect.gen(function* () {
+  const loader = yield* Loader;
+  const fileConverter = yield* FileConverter;
+  const writer = yield* Writer;
+  const moduleResolver = yield* ModuleResolver;
+
+  const files = yield* loader.load;
+
+  yield* moduleResolver.resolve(files);
+
+  yield* Effect.all(
+    files.map((file) =>
+      Effect.gen(function* () {
+        const converted = yield* fileConverter.convert(file);
+        yield* writer.write(converted);
+      }),
+    ),
+  );
+});
 
 export function makeAppConfig(config: UserConfig) {
   return Layer.effect(

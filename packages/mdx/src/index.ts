@@ -3,20 +3,14 @@
 import type { Pluggable } from "unified";
 import { bundleMDX } from "mdx-bundler";
 import { Effect, Layer } from "effect";
-import {
-  type UserConfig,
-  Loader,
-  FileConverter,
-  Writer,
-  ModuleResolver,
-  ContentConverter,
-} from "docube";
+import { type UserConfig, ContentConverter } from "docube";
 import {
   ContentValidatorLive,
   FileConverterLive,
   LoaderLive,
   makeAppConfig,
   ModuleResolverLive,
+  makeTransformer,
   WriterLive,
 } from "@docube/common";
 
@@ -71,45 +65,20 @@ export function makeMdxConverter(options: MdxBundleOptions) {
 
 export type TransformOptions = UserConfig & MdxBundleOptions;
 
-export function makeTransformer(options: TransformOptions) {
+export function transform(options: TransformOptions) {
   const AppConfigLive = makeAppConfig(options);
   const ContentConverterLive = makeMdxConverter(options);
 
-  const runable = Effect.gen(function* () {
-    const loader = yield* Loader;
-    const fileConverter = yield* FileConverter;
-    const writer = yield* Writer;
-    const moduleResolver = yield* ModuleResolver;
-
-    const files = yield* loader.load;
-
-    yield* moduleResolver.resolve(files);
-
-    yield* Effect.all(
-      files.map((file) =>
-        Effect.gen(function* () {
-          const converted = yield* fileConverter.convert(file);
-          yield* writer.write(converted);
-        }),
-      ),
-    );
+  const transformer = makeTransformer({
+    loader: LoaderLive.pipe(Layer.provide(AppConfigLive)),
+    fileConverter: FileConverterLive.pipe(
+      Layer.provide(AppConfigLive),
+      Layer.provide(ContentValidatorLive.pipe(Layer.provide(AppConfigLive))),
+      Layer.provide(ContentConverterLive),
+    ),
+    writer: WriterLive.pipe(Layer.provide(AppConfigLive)),
+    moduleResolver: ModuleResolverLive.pipe(Layer.provide(AppConfigLive)),
   });
 
-  return runable.pipe(
-    Effect.provide(LoaderLive.pipe(Layer.provide(AppConfigLive))),
-    Effect.provide(
-      FileConverterLive.pipe(
-        Layer.provide(AppConfigLive),
-        Layer.provide(ContentValidatorLive.pipe(Layer.provide(AppConfigLive))),
-        Layer.provide(ContentConverterLive),
-      ),
-    ),
-    Effect.provide(WriterLive.pipe(Layer.provide(AppConfigLive))),
-    Effect.provide(ModuleResolverLive.pipe(Layer.provide(AppConfigLive))),
-  );
-}
-
-export function transform(options: TransformOptions) {
-  const transfomer = makeTransformer(options);
-  Effect.runPromiseExit(transfomer).then(console.log, console.error);
+  Effect.runPromiseExit(transformer).then(console.log, console.error);
 }
