@@ -1,0 +1,19 @@
+* Docube
+
+Docube is a *libre* content SDK that validates and transforms your *any* content into *any* formats. By default, it converts text into type-safe JSON data you can easily import into your application's pages.
+
+** Workflow
+
+#+begin_src mermaid
+graph TD
+    A[Loader] -->|Array of FileLike| B{Split Process}
+    B -->|Optional| C[ModuleResolver]
+    B -->|Main| D[FileConverter]
+    D -->|FileLike| E[Writer]
+    E --> F[End]
+
+    subgraph "Per FileLike"
+    D
+    E
+    end
+#+end_src
