@@ -14,6 +14,7 @@ import {
   WriterLive,
   type UserConfig,
 } from "@docube/common";
+import type * as Schema from "@effect/schema/Schema";
 
 type MdxBundleOptions = {
   readonly remarkPlugins?: Pluggable[];
@@ -64,9 +65,12 @@ export function makeMdxConverter(options: MdxBundleOptions) {
   return converter;
 }
 
-export type TransformOptions = UserConfig & MdxBundleOptions;
+export type TransformOptions<F extends Schema.Struct.Fields> = UserConfig<F> &
+  MdxBundleOptions;
 
-export function transform(options: TransformOptions) {
+export function transform<F extends Schema.Struct.Fields>(
+  options: TransformOptions<F>,
+) {
   const AppConfigLive = makeAppConfig(options);
   const ContentConverterLive = makeMdxConverter(options);
 

@@ -2,7 +2,6 @@
 
 import {
   Loader,
-  NameNormalization,
   Writer,
   ModuleResolver,
   FileConverter,
@@ -14,11 +13,9 @@ import { Effect, Layer } from "effect";
 import { glob } from "glob";
 import fs from "node:fs/promises";
 import camelCase from "camelcase";
-import pluralize from "pluralize-esm";
 import path from "node:path";
-import { AST, Schema } from "@effect/schema";
 
-import { Config, type UserConfig } from "./config";
+import { Config } from "./config";
 
 export type TransformerDependencies = {
   loader: Layer.Layer<Loader, DocubeError>;
@@ -58,26 +55,6 @@ export const transformerMain = Effect.gen(function* () {
   );
 });
 
-export function makeAppConfig(config: UserConfig) {
-  return Layer.effect(
-    Config,
-    Effect.gen(function* () {
-      const { output = {} } = config;
-      const nameNormalization = yield* NameNormalization;
-      const normalizedName = yield* nameNormalization.normalize(config.name);
-      const newOutput = {
-        baseDir: output.baseDir ?? ".docube/generated",
-        typeName: output.typeName ?? normalizedName.typeName,
-        moduleName: output.moduleName ?? normalizedName.moduleName,
-        variableName: output.variableName ?? normalizedName.variableName,
-      };
-      return {
-        getConfig: Effect.succeed({ ...config, output: newOutput }),
-      };
-    }),
-  ).pipe(Layer.provide(NameNormalizationLive));
-}
-
 export const LoaderLive = Layer.effect(
   Loader,
   Effect.gen(function* () {
@@ -103,21 +80,6 @@ export const LoaderLive = Layer.effect(
         );
       }),
     };
-  }),
-);
-
-export const NameNormalizationLive = Layer.succeed(
-  NameNormalization,
-  NameNormalization.of({
-    normalize: (name) => {
-      const capital = camelCase(name, { pascalCase: true });
-      const camel = camelCase(name);
-      return Effect.succeed({
-        typeName: capital,
-        moduleName: pluralize(camel),
-        variableName: `all${pluralize(capital)}`,
-      });
-    },
   }),
 );
 
@@ -151,12 +113,17 @@ export const FileConverterLive = Layer.effect(
         Effect.gen(function* () {
           const {
             output: { baseDir, moduleName },
+            unsafePreValidation,
+            unsafePostContentConversion,
           } = yield* config.getConfig;
           const baseName = path.basename(
             file._meta.fileName,
             path.extname(file._meta.fileName),
           );
-          const converted = yield* contentConverter.convert(file);
+          let converted = yield* contentConverter.convert(file);
+          if (unsafePreValidation) {
+            converted = unsafePreValidation(converted, file);
+          }
           const validated = yield* validator.validate(converted);
 
           return {
@@ -164,7 +131,11 @@ export const FileConverterLive = Layer.effect(
               fileName: `${baseName}.json`,
               directory: path.join(baseDir, moduleName),
             },
-            text: Effect.succeed(JSON.stringify(validated, null, 2)),
+            text: Effect.succeed(
+              unsafePostContentConversion
+                ? unsafePostContentConversion(validated)
+                : JSON.stringify(validated, null, 2),
+            ),
           };
         }),
     };
@@ -178,20 +149,8 @@ export const ContentValidatorLive = Layer.effect(
     return {
       validate: (content) =>
         Effect.gen(function* () {
-          const { fields } = yield* config.getConfig;
-          const userFields = fields(Schema);
-          const schema = Schema.Struct({
-            ...userFields,
-            body: Schema.String,
-            _meta: Schema.Struct({
-              fileName: Schema.String,
-              directory: Schema.String,
-            }),
-          });
-          const result = yield* Effect.promise(() =>
-            Schema.decodeUnknownPromise(schema)(content),
-          );
-          return result;
+          const { decode } = yield* config.getConfig;
+          return yield* decode(content);
         }),
     };
   }),
@@ -205,8 +164,8 @@ export const ModuleResolverLive = Layer.effect(
       resolve: (files) =>
         Effect.gen(function* () {
           const {
-            output: { baseDir, moduleName, typeName, variableName },
-            fields,
+            output: { baseDir, moduleName, variableName },
+            typeStr,
           } = yield* config.getConfig;
           const outputDir = path.join(baseDir, moduleName);
           yield* Effect.promise(() => fs.mkdir(outputDir, { recursive: true }));
@@ -235,23 +194,19 @@ export const ModuleResolverLive = Layer.effect(
             fs.appendFile(parent, parentExport, { encoding: "utf-8" }),
           );
 
-          const userFields = fields(Schema);
-          const schema = Schema.Struct({
-            ...userFields,
-            body: Schema.String,
-            _meta: Schema.Struct({
-              fileName: Schema.String,
-              directory: Schema.String,
-            }),
-          });
           const dtsPath = path.join(baseDir, "index.d.ts");
-          const defineStatement = `\ntype ${typeName} = ${AST.encodedAST(schema.ast).toString()}\nexport declare const ${variableName}: ${typeName}[]`;
           yield* Effect.promise(() =>
-            fs.appendFile(dtsPath, defineStatement, { encoding: "utf-8" }),
+            fs.appendFile(dtsPath, typeStr, { encoding: "utf-8" }),
           );
         }),
     };
   }),
 );
 
-export { Config, type UserConfig, type AppConfig } from "./config";
+export {
+  Config,
+  type UserConfig,
+  type AppConfig,
+  makeAppConfig,
+} from "./config";
+export { NameNormalizationLive } from "./utils";

@@ -12,15 +12,18 @@ import {
   ContentValidatorLive,
   type UserConfig,
 } from "@docube/common";
+import type * as Schema from "@effect/schema/Schema";
 
 import { makeUnifiedLive } from "./unified";
 import { ContentConverterLive } from "./content";
 
-export type TransformOptions = UserConfig & {
+export type TransformOptions<F extends Schema.Struct.Fields> = UserConfig<F> & {
   readonly rehypePlugins?: Pluggable[];
 };
 
-export function transform(options: TransformOptions) {
+export function transform<F extends Schema.Struct.Fields>(
+  options: TransformOptions<F>,
+) {
   const AppConfigLive = makeAppConfig(options);
   const UnifiedLive = makeUnifiedLive({ rehypePlugins: options.rehypePlugins });
 

@@ -10,11 +10,13 @@ export class Loader extends Context.Tag("DocubeLoaderService")<
 >() {}
 
 export type FileLike = {
-  readonly _meta: {
-    fileName: string;
-    directory: string;
-  };
+  readonly _meta: FileMeta;
   readonly text: Effect.Effect<string, DocubeError>;
+};
+
+export type FileMeta = {
+  readonly fileName: string;
+  readonly directory: string;
 };
 
 export class Writer extends Context.Tag("DocubeWriterService")<

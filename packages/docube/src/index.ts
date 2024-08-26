@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: AGPL-3.0-or-later */
 
-export { type FileLike, Loader, Writer } from "./io";
+export { type FileLike, type FileMeta, Loader, Writer } from "./io";
 export { DocubeError } from "./error";
 export {
   NameNormalization,
