@@ -1,8 +1,9 @@
 /* SPDX-License-Identifier: AGPL-3.0-or-later */
 
-import { Context, Effect } from "effect";
-import type { Schema } from "@effect/schema";
-import type { NormalizedName } from "./utils";
+import { Context } from "effect";
+import type * as Effect from "effect/Effect";
+import type * as Schema from "@effect/schema/Schema";
+import type { NormalizedName } from "docube";
 
 type SchemaModuleType = typeof Schema;
 

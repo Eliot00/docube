@@ -1,6 +1,5 @@
 /* SPDX-License-Identifier: AGPL-3.0-or-later */
 
-import { type UserConfig } from "docube";
 import { Layer, Effect } from "effect";
 import { type Pluggable } from "unified";
 import {
@@ -11,6 +10,7 @@ import {
   ModuleResolverLive,
   FileConverterLive,
   ContentValidatorLive,
+  type UserConfig,
 } from "@docube/common";
 
 import { makeUnifiedLive } from "./unified";

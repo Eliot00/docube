@@ -2,14 +2,12 @@
 
 import {
   Loader,
-  Config,
   NameNormalization,
   Writer,
   ModuleResolver,
   FileConverter,
   ContentConverter,
   ContentValidator,
-  type UserConfig,
   DocubeError,
 } from "docube";
 import { Effect, Layer } from "effect";
@@ -19,6 +17,8 @@ import camelCase from "camelcase";
 import pluralize from "pluralize-esm";
 import path from "node:path";
 import { AST, Schema } from "@effect/schema";
+
+import { Config, type UserConfig } from "./config";
 
 export type TransformerDependencies = {
   loader: Layer.Layer<Loader, DocubeError>;
@@ -253,3 +253,5 @@ export const ModuleResolverLive = Layer.effect(
     };
   }),
 );
+
+export { Config, type UserConfig, type AppConfig } from "./config";

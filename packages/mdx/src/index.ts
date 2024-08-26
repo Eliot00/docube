@@ -3,7 +3,7 @@
 import type { Pluggable } from "unified";
 import { bundleMDX } from "mdx-bundler";
 import { Effect, Layer } from "effect";
-import { type UserConfig, ContentConverter } from "docube";
+import { ContentConverter } from "docube";
 import {
   ContentValidatorLive,
   FileConverterLive,
@@ -12,6 +12,7 @@ import {
   ModuleResolverLive,
   makeTransformer,
   WriterLive,
+  type UserConfig,
 } from "@docube/common";
 
 type MdxBundleOptions = {
