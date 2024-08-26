@@ -18,7 +18,6 @@
   "devDependencies": {
     "@docube/eslint-config": "*",
     "@docube/typescript-config": "*",
-    "@types/bun": "latest",
     "@types/node": "^22.3.0",
     "bun-plugin-dts": "^0.2.3",
     "eslint": "^9.9.0",
