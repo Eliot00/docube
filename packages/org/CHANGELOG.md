@@ -1,5 +1,13 @@
 # @docube/org
 
+## 0.4.1
+
+### Patch Changes
+
+- Fix npm publish error
+- Updated dependencies
+  - @docube/common@0.4.1
+
 ## 0.4.0
 
 ### Minor Changes
