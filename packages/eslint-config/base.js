@@ -18,14 +18,14 @@ export default [
   {
     languageOptions: {
       parserOptions: {
-        project: resolve(process.cwd(), "tsconfig.json")
+        project: resolve(process.cwd(), "tsconfig.json"),
       },
       globals: {
         ...globals.node,
         React: true,
-        JSX: true
-      }
-    }
+        JSX: true,
+      },
+    },
   },
   {
     ignores: [
@@ -34,7 +34,6 @@ export default [
       "*.config*.?(c)js",
       ".*.ts",
       "*.config*.ts",
-      "*.test.ts",
       "*.d.ts",
       "dist",
       ".git",
@@ -42,7 +41,7 @@ export default [
       "build",
       "build.mjs",
       ".next",
-      "*rollup*"
-    ]
-  }
+      "*rollup*",
+    ],
+  },
 ];

@@ -209,4 +209,4 @@ export {
   type AppConfig,
   makeAppConfig,
 } from "./config";
-export { NameNormalizationLive } from "./utils";
+export { NameNormalizationLive, makeOutputMeta } from "./utils";

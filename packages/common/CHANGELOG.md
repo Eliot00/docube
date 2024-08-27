@@ -1,5 +1,11 @@
 # @docube/common
 
+## 0.4.0
+
+### Minor Changes
+
+- Auto-generate slugs in meta fields from original filenames
+
 ## 0.3.0
 
 ### Minor Changes

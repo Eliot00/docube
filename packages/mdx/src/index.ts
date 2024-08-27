@@ -13,6 +13,7 @@ import {
   makeTransformer,
   WriterLive,
   type UserConfig,
+  makeOutputMeta,
 } from "@docube/common";
 import type * as Schema from "@effect/schema/Schema";
 
@@ -56,7 +57,7 @@ export function makeMdxConverter(options: MdxBundleOptions) {
 
           return {
             ...frontmatter,
-            _meta: file._meta,
+            _meta: makeOutputMeta(file),
             body: code,
           };
         }),

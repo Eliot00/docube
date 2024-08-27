@@ -95,8 +95,10 @@ export function makeInternalSchema<F extends Schema.Struct.Fields>(
     ...userFields,
     body: Schema.String,
     _meta: Schema.Struct({
-      fileName: Schema.String,
-      directory: Schema.String,
+      sourceFileName: Schema.String,
+      sourceDirectory: Schema.String,
+      sourceFileType: Schema.String,
+      slug: Schema.String,
     }),
   });
 }
