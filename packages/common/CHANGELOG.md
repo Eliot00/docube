@@ -1,5 +1,16 @@
 # @docube/common
 
+## 0.3.0
+
+### Minor Changes
+
+- Support custom unsafe converter
+
+### Patch Changes
+
+- Updated dependencies
+  - docube@0.4.0
+
 ## 0.2.1
 
 ### Patch Changes

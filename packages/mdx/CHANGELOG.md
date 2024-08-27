@@ -1,5 +1,17 @@
 # @docube/mdx
 
+## 0.2.0
+
+### Minor Changes
+
+- Support custom unsafe converter
+
+### Patch Changes
+
+- Updated dependencies
+  - @docube/common@0.3.0
+  - docube@0.4.0
+
 ## 0.1.2
 
 ### Patch Changes
