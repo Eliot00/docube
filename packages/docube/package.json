@@ -1,6 +1,21 @@
 {
   "name": "docube",
   "version": "0.4.0",
+  "keywords": [
+    "effect",
+    "content",
+    "document",
+    "mdx",
+    "JSON"
+  ],
+  "homepage": "https://codeberg.org/Elliot00/docube",
+  "repository": {
+    "type": "git",
+    "url": "https://codeberg.org/Elliot00/docube.git"
+  },
+  "bugs": {
+    "url": "https://codeberg.org/Elliot00/docube/issues"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
