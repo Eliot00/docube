@@ -1,5 +1,12 @@
 # @docube/common
 
+## 0.5.0
+
+### Minor Changes
+
+- 0e3b68a: Make writer optional
+- 9efe301: Make module resolver optional
+
 ## 0.4.1
 
 ### Patch Changes

@@ -1,5 +1,17 @@
 # @docube/mdx
 
+## 0.4.0
+
+### Minor Changes
+
+- 6258d60: Remove unnecessary layer
+
+### Patch Changes
+
+- Updated dependencies [0e3b68a]
+- Updated dependencies [9efe301]
+  - @docube/common@0.5.0
+
 ## 0.3.1
 
 ### Patch Changes
