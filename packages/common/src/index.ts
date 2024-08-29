@@ -9,7 +9,7 @@ import {
   ContentValidator,
   DocubeError,
 } from "docube";
-import { Effect, Layer } from "effect";
+import { Effect, identity, Layer, Option } from "effect";
 import { glob } from "glob";
 import fs from "node:fs/promises";
 import camelCase from "camelcase";
@@ -18,10 +18,10 @@ import path from "node:path";
 import { Config } from "./config";
 
 export type TransformerDependencies = {
-  loader: Layer.Layer<Loader, DocubeError>;
-  fileConverter: Layer.Layer<FileConverter, DocubeError>;
-  moduleResolver: Layer.Layer<ModuleResolver, DocubeError>;
-  writer?: Layer.Layer<Writer, DocubeError>;
+  readonly loader: Layer.Layer<Loader, DocubeError>;
+  readonly fileConverter: Layer.Layer<FileConverter, DocubeError>;
+  readonly moduleResolver?: Layer.Layer<ModuleResolver, DocubeError>;
+  readonly writer?: Layer.Layer<Writer, DocubeError>;
 };
 
 export function makeTransformer(deps: TransformerDependencies) {
@@ -30,8 +30,8 @@ export function makeTransformer(deps: TransformerDependencies) {
   return transformerMain.pipe(
     Effect.provide(loader),
     Effect.provide(fileConverter),
-    Effect.provide(moduleResolver),
     Effect.provide(writer),
+    moduleResolver ? Effect.provide(moduleResolver) : identity,
   );
 }
 
@@ -39,11 +39,13 @@ export const transformerMain = Effect.gen(function* () {
   const loader = yield* Loader;
   const fileConverter = yield* FileConverter;
   const writer = yield* Writer;
-  const moduleResolver = yield* ModuleResolver;
+  const maybeModuleResolver = yield* Effect.serviceOption(ModuleResolver);
 
   const files = yield* loader.load;
 
-  yield* moduleResolver.resolve(files);
+  if (Option.isSome(maybeModuleResolver)) {
+    yield* maybeModuleResolver.value.resolve(files);
+  }
 
   yield* Effect.all(
     files.map((file) =>
