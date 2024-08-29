@@ -82,7 +82,7 @@ export function transform<F extends Schema.Struct.Fields>(
       Layer.provide(ContentValidatorLive.pipe(Layer.provide(AppConfigLive))),
       Layer.provide(ContentConverterLive),
     ),
-    writer: WriterLive.pipe(Layer.provide(AppConfigLive)),
+    writer: WriterLive,
     moduleResolver: ModuleResolverLive.pipe(Layer.provide(AppConfigLive)),
   });
 

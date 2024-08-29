@@ -35,7 +35,7 @@ export function transform<F extends Schema.Struct.Fields>(
       Layer.provide(ContentConverterLive.pipe(Layer.provide(UnifiedLive))),
     ),
     moduleResolver: ModuleResolverLive.pipe(Layer.provide(AppConfigLive)),
-    writer: WriterLive.pipe(Layer.provide(AppConfigLive)),
+    writer: WriterLive,
   });
   Effect.runPromiseExit(transformer).then(console.log, console.error);
 }
