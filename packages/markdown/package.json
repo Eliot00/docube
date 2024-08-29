@@ -1,0 +1,41 @@
+{
+  "name": "@docube/markdown",
+  "version": "0.1.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "scripts": {
+    "build": "bun run build.mjs",
+    "lint": "eslint . --max-warnings 0"
+  },
+  "devDependencies": {
+    "@docube/eslint-config": "*",
+    "@docube/typescript-config": "*",
+    "@effect/schema": "^0.71.2",
+    "bun-plugin-dts": "^0.2.3",
+    "eslint": "^9.9.0",
+    "unified": "^11.0.5",
+    "vfile": "^6.0.2"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@docube/common": "*",
+    "docube": "*",
+    "effect": "^3.6.4",
+    "rehype-raw": "^7.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.0"
+  },
+  "optionalDependencies": {
+    "gray-matter": "^4.0.3"
+  }
+}
