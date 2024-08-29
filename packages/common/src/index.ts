@@ -21,11 +21,11 @@ export type TransformerDependencies = {
   loader: Layer.Layer<Loader, DocubeError>;
   fileConverter: Layer.Layer<FileConverter, DocubeError>;
   moduleResolver: Layer.Layer<ModuleResolver, DocubeError>;
-  writer: Layer.Layer<Writer, DocubeError>;
+  writer?: Layer.Layer<Writer, DocubeError>;
 };
 
 export function makeTransformer(deps: TransformerDependencies) {
-  const { loader, fileConverter, moduleResolver, writer } = deps;
+  const { loader, fileConverter, moduleResolver, writer = WriterLive } = deps;
 
   return transformerMain.pipe(
     Effect.provide(loader),
