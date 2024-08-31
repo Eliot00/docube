@@ -15,7 +15,7 @@ import fs from "node:fs/promises";
 import camelCase from "camelcase";
 import path from "node:path";
 
-import { Config } from "./config";
+import { Config, type InternalConverterOutput } from "./config";
 
 export type TransformerDependencies = {
   readonly loader: Layer.Layer<Loader, DocubeError>;
@@ -135,7 +135,9 @@ export const FileConverterLive = Layer.effect(
             },
             text: Effect.succeed(
               unsafePostContentConversion
-                ? unsafePostContentConversion(validated)
+                ? unsafePostContentConversion(
+                    validated as InternalConverterOutput,
+                  )
                 : JSON.stringify(validated, null, 2),
             ),
           };
@@ -152,7 +154,7 @@ export const ContentValidatorLive = Layer.effect(
       validate: (content) =>
         Effect.gen(function* () {
           const { decode } = yield* config.getConfig;
-          return yield* decode(content);
+          return yield* decode(content as InternalConverterOutput);
         }),
     };
   }),
@@ -210,5 +212,6 @@ export {
   type UserConfig,
   type AppConfig,
   makeAppConfig,
+  type InternalConverterOutput,
 } from "./config";
 export { NameNormalizationLive, makeOutputMeta } from "./utils";

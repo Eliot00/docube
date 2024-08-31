@@ -5,12 +5,11 @@ import { AST, Schema } from "@effect/schema";
 import {
   NameNormalization,
   type NormalizedName,
-  type FileMeta,
   type FileLike,
   DocubeError,
 } from "docube";
 
-import { NameNormalizationLive } from "./utils";
+import { NameNormalizationLive, type OutputMeta } from "./utils";
 
 type SchemaModuleType = typeof Schema;
 
@@ -29,17 +28,28 @@ export type AppConfig = {
   readonly output: {
     baseDir: string;
   } & NormalizedName;
-  readonly decode: (raw: unknown) => Effect.Effect<unknown, DocubeError>;
+  readonly decode: (
+    raw: InternalConverterOutput,
+  ) => Effect.Effect<InternalConverterOutput, DocubeError>;
   readonly typeStr: string;
-  readonly unsafePostContentConversion?: (raw: unknown) => string;
+  readonly unsafePostContentConversion?: (
+    raw: InternalConverterOutput,
+  ) => string;
 } & BaseConfig;
+
+export type InternalConverterOutput = {
+  readonly body: string;
+  readonly _meta: OutputMeta;
+} & {
+  [key: string]: unknown;
+};
 
 export interface UserConfig<in out F extends Schema.Struct.Fields>
   extends BaseConfig {
   readonly output?: Partial<AppConfig["output"]>;
   readonly fields: (s: SchemaModuleType) => F;
   readonly unsafePostContentConversion?: (
-    raw: Schema.Struct.Type<F> & { body: string; _meta: FileMeta },
+    raw: Schema.Struct.Type<F> & InternalConverterOutput,
   ) => string;
 }
 
@@ -67,8 +77,13 @@ export function makeAppConfig<F extends Schema.Struct.Fields>(
       const schema = makeInternalSchema(config);
 
       // TODO: don't know why
-      const decode = (raw: unknown) =>
-        Effect.succeed(Schema.decodeUnknownSync(schema as any)(raw)); // eslint-disable-line
+      const decode = (raw: InternalConverterOutput) =>
+        Effect.succeed(
+          Schema.decodeUnknownSync<
+            InternalConverterOutput,
+            InternalConverterOutput
+          >(schema as any)(raw), // eslint-disable-line
+        );
 
       const typeStr = `\ntype ${newOutput.typeName} = ${AST.encodedAST(schema.ast).toString()}\nexport declare const ${newOutput.variableName}: ${newOutput.typeName}[]`;
       return {
