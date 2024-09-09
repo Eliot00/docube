@@ -18,7 +18,7 @@
   "devDependencies": {
     "@docube/eslint-config": "*",
     "@docube/typescript-config": "*",
-    "@effect/schema": "^0.71.2",
+    "@effect/schema": "^0.71.3",
     "bun-plugin-dts": "^0.2.3",
     "eslint": "^9.9.0",
     "unified": "^11.0.5",
@@ -30,7 +30,7 @@
   "dependencies": {
     "@docube/common": "*",
     "docube": "*",
-    "effect": "^3.6.4",
+    "effect": "^3.7.2",
     "rehype-raw": "^7.0.0",
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.0"

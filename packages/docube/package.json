@@ -38,6 +38,6 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "effect": "^3.6.4"
+    "effect": "^3.7.2"
   }
 }

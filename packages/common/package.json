@@ -26,10 +26,10 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@effect/schema": "^0.71.1",
+    "@effect/schema": "^0.72.3",
     "camelcase": "^8.0.0",
     "docube": "*",
-    "effect": "^3.6.5",
+    "effect": "^3.7.2",
     "glob": "^11.0.0",
     "pluralize-esm": "^9.0.5"
   }
