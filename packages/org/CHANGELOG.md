@@ -1,5 +1,16 @@
 # @docube/org
 
+## 0.5.1
+
+### Patch Changes
+
+- 5116bf8: Sync monorepo dependencies
+- d7d1198: Resolved an issue where rehype plugins could not be applied in the `makeUnifiedLive`
+- Updated dependencies [5116bf8]
+- Updated dependencies [a2c6610]
+  - @docube/common@0.6.0
+  - docube@0.4.1
+
 ## 0.5.0
 
 ### Minor Changes

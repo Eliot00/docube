@@ -1,5 +1,17 @@
 # @docube/common
 
+## 0.6.0
+
+### Minor Changes
+
+- a2c6610: Change custom converter type
+
+### Patch Changes
+
+- 5116bf8: Sync monorepo dependencies
+- Updated dependencies [5116bf8]
+  - docube@0.4.1
+
 ## 0.5.0
 
 ### Minor Changes

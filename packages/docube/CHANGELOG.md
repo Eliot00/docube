@@ -1,5 +1,11 @@
 # docube
 
+## 0.4.1
+
+### Patch Changes
+
+- 5116bf8: Sync monorepo dependencies
+
 ## 0.4.0
 
 ### Minor Changes
