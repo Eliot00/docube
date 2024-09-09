@@ -11,16 +11,18 @@ export type Options = {
 };
 
 export function makeUnifiedLive(options?: Options) {
-  const builder = unified().use(parse).use(extractKeywords).use(uniorg2rehype);
-  if (options?.rehypePlugins) {
-    builder().use(options.rehypePlugins);
-  }
+  const processor = unified()
+    .use(parse)
+    .use(extractKeywords)
+    .use(uniorg2rehype)
+    .use(options?.rehypePlugins || [])
+    .use(stringify);
 
   return Layer.succeed(
     Unified,
     Unified.of({
       process(content) {
-        return Effect.promise(() => builder().use(stringify).process(content));
+        return Effect.promise(() => processor.process(content));
       },
     }),
   );
