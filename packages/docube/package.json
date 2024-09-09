@@ -1,6 +1,9 @@
 {
   "name": "docube",
   "version": "0.4.1",
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
     "effect",
     "content",
