@@ -11,6 +11,12 @@
   "publishConfig": {
     "access": "public"
   },
+  "keywords": [
+    "content",
+    "document",
+    "orgmode",
+    "JSON"
+  ],
   "scripts": {
     "build": "bun run build.mjs",
     "lint": "eslint . --max-warnings 0"
