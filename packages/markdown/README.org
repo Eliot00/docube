@@ -1,0 +1,105 @@
+* @docube/markdown
+
+Transform your markdown content into type-safe data collections.
+
+** Installation
+
+*** npm
+
+#+begin_src shell
+npm i @docube/markdown -D
+#+end_src
+
+*** pnpm
+
+#+begin_src shell
+pnpm add @docube/markdown -D
+#+end_src
+
+*** yarn
+
+#+begin_src shell
+yarn add @docube/markdown --dev
+#+end_src
+
+*** bun
+
+#+begin_src shell
+bun add @docube/markdown --dev
+#+end_src
+
+** Usage
+
+1. Create a ~generate.ts~ file at the root of your project:
+
+  #+begin_src typescript
+  import { transform } from "@docube/markdown";
+
+  transform({
+    name: "Post",
+    directory: "content",
+    include: "**/*.md",
+    fields: (s) => ({
+      title: s.String,
+      date: s.String,
+    }),
+    remarkPlugins: [/* remarkGfm, ... */],
+    rehypePlugins: [/* rehypePrettyCode, rehypeSlug, ... */],
+  });
+  #+end_src
+
+2. Start writing content in ~content~:
+
+  #+begin_src markdown
+  ---
+  title: Hello World
+  summary: This is my first post
+  ---
+
+  # Hello World
+
+  This is my first post.
+  #+end_src
+
+3. Run ~generate.ts~, recommend use ~esrun~ or ~bun~.
+
+4. Update your ~tsconfig.json~:
+
+  #+begin_src json
+  "paths": {
+    "@docube/generated": ["./.docube/generated"]
+  }
+  #+end_src
+
+5. Use your content in your app:
+
+  #+begin_src tsx
+  import { allPosts } from "@docube/generated";
+
+  export function Posts() {
+    return (
+      <ul>
+        {allPosts.map((post) => (
+          <li key={post._meta.path}>
+            <a href={`/posts/${post._meta.path}`}>
+              <h3>{post.title}</h3>
+              <p>{post.summary}</p>
+            </a>
+          </li>
+        ))}
+      </ul>
+    );
+  }
+  #+end_src
+
+  #+begin_src tsx
+  import { allPosts } from "@docube/generated";
+
+  export function Post({ slug }) {
+    const post = allPosts.find(p => p._mata.slug === slug)
+
+    return (
+      <article dangerouslySetInnerHTML={{ __html: post.body }} />
+    )
+  }
+  #+end_src

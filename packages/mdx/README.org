@@ -1,0 +1,109 @@
+* @docube/mdx
+
+Transform your MDX content into type-safe data collections.
+
+** Installation
+
+*** npm
+
+#+begin_src shell
+npm i @docube/mdx -D
+#+end_src
+
+*** pnpm
+
+#+begin_src shell
+pnpm add @docube/mdx -D
+#+end_src
+
+*** yarn
+
+#+begin_src shell
+yarn add @docube/mdx --dev
+#+end_src
+
+*** bun
+
+#+begin_src shell
+bun add @docube/mdx --dev
+#+end_src
+
+** Usage
+
+1. Create a ~generate.ts~ file at the root of your project:
+
+  #+begin_src typescript
+  import { transform } from "@docube/mdx";
+
+  transform({
+    name: "Post",
+    directory: "content",
+    include: "**/*.mdx",
+    fields: (s) => ({
+      title: s.String,
+      date: s.String,
+    }),
+    remarkPlugins: [/* remarkGfm, ... */],
+    rehypePlugins: [/* rehypePrettyCode, rehypeSlug, ... */],
+  });
+  #+end_src
+
+2. Start writing content in ~content~:
+
+  #+begin_src mdx
+  ---
+  title: Hello World
+  summary: This is my first post
+  ---
+
+  # Hello World
+
+  This is my first post.
+  #+end_src
+
+3. Run ~generate.ts~, recommend use ~esrun~ or ~bun~.
+
+4. Update your ~tsconfig.json~:
+
+  #+begin_src json
+  "paths": {
+    "@docube/generated": ["./.docube/generated"]
+  }
+  #+end_src
+
+5. Use your content in your app:
+
+  #+begin_src tsx
+  import { allPosts } from "@docube/generated";
+
+  export function Posts() {
+    return (
+      <ul>
+        {allPosts.map((post) => (
+          <li key={post._meta.path}>
+            <a href={`/posts/${post._meta.path}`}>
+              <h3>{post.title}</h3>
+              <p>{post.summary}</p>
+            </a>
+          </li>
+        ))}
+      </ul>
+    );
+  }
+  #+end_src
+
+  #+begin_src tsx
+  import { allPosts } from "@docube/generated";
+  import { getMDXComponent } from 'mdx-bundler/client'
+
+  export function Post({ slug }) {
+    const post = allPosts.find(p => p._mata.slug === slug)
+
+    // https://github.com/kentcdodds/mdx-bundler?tab=readme-ov-file#usage
+    const MDXContent = getMDXComponent(post.body)
+
+    return (
+      <MDXContent components={components} />
+    )
+  }
+  #+end_src
