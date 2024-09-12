@@ -74,9 +74,14 @@ export const LoaderLive = Layer.effect(
                 fileName,
                 directory,
               },
-              text: Effect.promise(() =>
-                fs.readFile(fileName).then((buf) => buf.toString()),
-              ),
+              text: Effect.tryPromise({
+                try: () =>
+                  fs
+                    .readFile(fileName, { encoding: "utf-8" })
+                    .then((buf) => buf.toString()),
+                catch: (error) =>
+                  new DocubeError({ message: `LoadError: ${error}` }),
+              }),
             }),
           ),
         );
@@ -96,9 +101,11 @@ export const WriterLive = Layer.succeed(
         const targetPath = path.join(directory, fileName);
         const text = yield* file.text;
 
-        yield* Effect.promise(() =>
-          fs.writeFile(targetPath, text, { encoding: "utf-8" }),
-        );
+        yield* Effect.tryPromise({
+          try: () => fs.writeFile(targetPath, text, { encoding: "utf-8" }),
+          catch: (error) =>
+            new DocubeError({ message: `Write error: ${error}` }),
+        });
       }),
   }),
 );
