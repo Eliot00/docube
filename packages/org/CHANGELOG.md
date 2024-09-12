@@ -1,5 +1,13 @@
 # @docube/org
 
+## 0.5.2
+
+### Patch Changes
+
+- ade8fa5: Fix @effect/schema version
+- Updated dependencies [a1ef363]
+  - @docube/common@0.7.0
+
 ## 0.5.1
 
 ### Patch Changes

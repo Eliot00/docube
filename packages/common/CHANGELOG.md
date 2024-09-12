@@ -1,5 +1,11 @@
 # @docube/common
 
+## 0.7.0
+
+### Minor Changes
+
+- a1ef363: Catch file IO error
+
 ## 0.6.0
 
 ### Minor Changes
