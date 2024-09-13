@@ -8,8 +8,10 @@ import {
   ContentConverter,
   ContentValidator,
   DocubeError,
+  transformerMain,
+  MainProcessor,
 } from "docube";
-import { Effect, identity, Layer, Option } from "effect";
+import { Effect, identity, Layer } from "effect";
 import { glob } from "glob";
 import fs from "node:fs/promises";
 import camelCase from "camelcase";
@@ -29,33 +31,31 @@ export function makeTransformer(deps: TransformerDependencies) {
 
   return transformerMain.pipe(
     Effect.provide(loader),
-    Effect.provide(fileConverter),
-    Effect.provide(writer),
+    Effect.provide(
+      MainProcessorLive.pipe(
+        Layer.provide(fileConverter),
+        Layer.provide(writer),
+      ),
+    ),
     moduleResolver ? Effect.provide(moduleResolver) : identity,
   );
 }
 
-export const transformerMain = Effect.gen(function* () {
-  const loader = yield* Loader;
-  const fileConverter = yield* FileConverter;
-  const writer = yield* Writer;
-  const maybeModuleResolver = yield* Effect.serviceOption(ModuleResolver);
+export const MainProcessorLive = Layer.effect(
+  MainProcessor,
+  Effect.gen(function* () {
+    const fileConverter = yield* FileConverter;
+    const writer = yield* Writer;
 
-  const files = yield* loader.load;
-
-  if (Option.isSome(maybeModuleResolver)) {
-    yield* maybeModuleResolver.value.resolve(files);
-  }
-
-  yield* Effect.all(
-    files.map((file) =>
-      Effect.gen(function* () {
-        const converted = yield* fileConverter.convert(file);
-        yield* writer.write(converted);
-      }),
-    ),
-  );
-});
+    return {
+      process: (file) =>
+        Effect.gen(function* () {
+          const converted = yield* fileConverter.convert(file);
+          yield* writer.write(converted);
+        }),
+    };
+  }),
+);
 
 export const LoaderLive = Layer.effect(
   Loader,
