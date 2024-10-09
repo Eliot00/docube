@@ -8,5 +8,5 @@ await Bun.build({
   minify: true,
   target: "node",
   plugins: [dts()],
-  external: ["react", "unified", "mdx-bundler"],
+  packages: 'external',
 });
