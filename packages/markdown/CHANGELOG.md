@@ -1,5 +1,14 @@
 # @docube/markdown
 
+## 0.3.1
+
+### Patch Changes
+
+- Revert bun build config
+- Updated dependencies
+  - @docube/common@0.8.1
+  - docube@0.5.1
+
 ## 0.3.0
 
 ### Minor Changes

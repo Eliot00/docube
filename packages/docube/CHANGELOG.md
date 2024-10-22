@@ -1,5 +1,11 @@
 # docube
 
+## 0.5.1
+
+### Patch Changes
+
+- Revert bun build config
+
 ## 0.5.0
 
 ### Minor Changes
