@@ -1,10 +1,12 @@
 import { ContentConverter } from "docube";
-import { Layer, Effect, Option } from "effect";
+import { Layer, Effect } from "effect";
 import rehypeStringify from "rehype-stringify";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
+import remarkFrontmatter from "remark-frontmatter";
 import rehypeRaw from "rehype-raw";
 import { unified, type Pluggable } from "unified";
+import { matter } from "vfile-matter";
 import {
   ContentValidatorLive,
   FileConverterLive,
@@ -15,13 +17,9 @@ import {
   ModuleResolverLive,
   type UserConfig,
 } from "@docube/common";
-import type { JsonValue } from "@effect/schema/FastCheck";
 import type * as Schema from "@effect/schema/Schema";
 
 type Options = {
-  readonly frontMatterExtractor?: (content: string) => {
-    [key in string]?: JsonValue;
-  };
   readonly allowDangerousHtml?: boolean;
   readonly remarkPlugins?: Pluggable[];
   readonly rehypePlugins?: Pluggable[];
@@ -33,7 +31,14 @@ export function makeMarkdownConverter(options: Options) {
     ContentConverter.of({
       convert: (file) =>
         Effect.gen(function* () {
-          const builder = unified().use(remarkParse);
+          const builder = unified()
+            .use(remarkParse)
+            .use(remarkFrontmatter)
+            .use(() => {
+              return function (_, file) {
+                matter(file, { strip: true });
+              };
+            });
           if (options.remarkPlugins) {
             builder.use(options.remarkPlugins);
           }
@@ -54,17 +59,7 @@ export function makeMarkdownConverter(options: Options) {
             builder.use(rehypeStringify).process(content),
           );
 
-          let frontMatterData = {};
-          if (options.frontMatterExtractor) {
-            frontMatterData = options.frontMatterExtractor(content);
-          } else {
-            const maybeMatter = yield* Effect.promise(
-              () => import("gray-matter"),
-            ).pipe(Effect.option);
-            if (Option.isSome(maybeMatter)) {
-              frontMatterData = maybeMatter.value.default(content).data;
-            }
-          }
+          const frontMatterData = html.data.matter || {};
 
           return {
             ...frontMatterData,

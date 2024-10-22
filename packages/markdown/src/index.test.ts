@@ -29,21 +29,14 @@ describe("makeMarkdownConverter", () => {
 
   it("should convert simple Markdown to HTML", async () => {
     const result = await buildTest("# Hello World", {});
-    expect(result.body).toContain("<h1>Hello World</h1>");
+    expect(result.body).toBe("<h1>Hello World</h1>");
     expect(result._meta).toBeDefined();
   });
 
-  it("should handle front matter with default extractor", async () => {
+  it("should handle front matter", async () => {
     const result = await buildTest("---\ntitle: Test\n---\n# Content", {});
     expect(result.title).toBe("Test");
-    expect(result.body).toContain("<h1>Content</h1>");
-  });
-
-  it("should use custom frontMatterExtractor if provided", async () => {
-    const result = await buildTest("# Content", {
-      frontMatterExtractor: () => ({ custom: "data" }),
-    });
-    expect(result.custom).toBe("data");
+    expect(result.body).toBe("<h1>Content</h1>");
   });
 
   it("should handle allowDangerousHtml option", async () => {
