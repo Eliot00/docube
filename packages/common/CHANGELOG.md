@@ -1,5 +1,18 @@
 # @docube/common
 
+## 0.8.0
+
+### Minor Changes
+
+- 441cf6d: Move default Transformer definition to core package and extract `MainProcessor`
+- cf78a1f: Exclude package dependencies from bundle build
+
+### Patch Changes
+
+- Updated dependencies [441cf6d]
+- Updated dependencies [cf78a1f]
+  - docube@0.5.0
+
 ## 0.7.0
 
 ### Minor Changes

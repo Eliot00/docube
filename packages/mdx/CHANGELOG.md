@@ -1,5 +1,18 @@
 # @docube/mdx
 
+## 0.5.0
+
+### Minor Changes
+
+- cf78a1f: Exclude package dependencies from bundle build
+
+### Patch Changes
+
+- Updated dependencies [441cf6d]
+- Updated dependencies [cf78a1f]
+  - @docube/common@0.8.0
+  - docube@0.5.0
+
 ## 0.4.2
 
 ### Patch Changes
