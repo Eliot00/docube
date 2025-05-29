@@ -22,13 +22,13 @@
     "lint": "eslint . --max-warnings 0"
   },
   "devDependencies": {
-    "@docube/eslint-config": "*",
-    "@docube/typescript-config": "*",
+    "@docube/eslint-config": "workspace:*",
+    "@docube/typescript-config": "workspace:*",
     "@effect/schema": "^0.72.3",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "bun-plugin-dts": "^0.2.3",
-    "eslint": "^9.9.0",
+    "bun-plugin-dts": "catalog:",
+    "eslint": "catalog:",
     "unified": "^11.0.5",
     "vfile": "^6.0.2"
   },
@@ -38,9 +38,9 @@
     "react-dom": "^18.2.0"
   },
   "dependencies": {
-    "@docube/common": "*",
-    "docube": "*",
-    "effect": "^3.7.2",
+    "@docube/common": "workspace:*",
+    "docube": "workspace:*",
+    "effect": "catalog:",
     "esbuild": "^0.23.1",
     "mdx-bundler": "^10.0.3"
   }

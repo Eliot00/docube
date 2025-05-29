@@ -3,9 +3,9 @@
   "version": "0.3.1",
   "main": "dist/index.js",
   "dependencies": {
-    "@docube/common": "*",
-    "docube": "*",
-    "effect": "^3.7.2",
+    "@docube/common": "workspace:*",
+    "docube": "workspace:*",
+    "effect": "catalog:",
     "rehype-raw": "^7.0.0",
     "remark-frontmatter": "^5.0.0",
     "remark-parse": "^11.0.0",
@@ -13,11 +13,11 @@
     "vfile-matter": "^5.0.0"
   },
   "devDependencies": {
-    "@docube/eslint-config": "*",
-    "@docube/typescript-config": "*",
+    "@docube/eslint-config": "workspace:*",
+    "@docube/typescript-config": "workspace:*",
     "@effect/schema": "^0.72.3",
-    "bun-plugin-dts": "^0.2.3",
-    "eslint": "^9.9.0",
+    "bun-plugin-dts": "catalog:",
+    "eslint": "catalog:",
     "unified": "^11.0.5",
     "vfile": "^6.0.2"
   },

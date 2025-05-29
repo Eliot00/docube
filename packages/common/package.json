@@ -22,10 +22,10 @@
     "lint": "eslint . --max-warnings 0"
   },
   "devDependencies": {
-    "@docube/eslint-config": "*",
-    "@docube/typescript-config": "*",
-    "bun-plugin-dts": "^0.2.3",
-    "eslint": "^9.9.0",
+    "@docube/eslint-config": "workspace:*",
+    "@docube/typescript-config": "workspace:*",
+    "bun-plugin-dts": "catalog:",
+    "eslint": "catalog:",
     "slugify": "^1.6.6"
   },
   "peerDependencies": {
@@ -34,8 +34,8 @@
   "dependencies": {
     "@effect/schema": "^0.72.3",
     "camelcase": "^8.0.0",
-    "docube": "*",
-    "effect": "^3.7.2",
+    "docube": "workspace:*",
+    "effect": "catalog:",
     "glob": "^11.0.0",
     "pluralize-esm": "^9.0.5"
   }
