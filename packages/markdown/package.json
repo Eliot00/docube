@@ -16,6 +16,7 @@
     "@docube/eslint-config": "workspace:*",
     "@docube/typescript-config": "workspace:*",
     "@effect/schema": "^0.72.3",
+    "@types/bun": "catalog:",
     "bun-plugin-dts": "catalog:",
     "eslint": "catalog:",
     "unified": "^11.0.5",
