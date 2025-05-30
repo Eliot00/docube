@@ -1,5 +1,11 @@
 # @docube/common
 
+## 0.9.3
+
+### Patch Changes
+
+- Fix cache exists check return type
+
 ## 0.9.2
 
 ### Patch Changes

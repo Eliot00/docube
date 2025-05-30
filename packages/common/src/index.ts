@@ -249,7 +249,7 @@ export const SkipCheckerLive = Layer.succeed(
           .digest("hex");
 
         const cacheHashExists = yield* Effect.tryPromise(() =>
-          access(cacheHashFilePath),
+          access(cacheHashFilePath).then(() => true),
         ).pipe(Effect.catchAll(() => Effect.succeed(false)));
 
         if (cacheHashExists) {

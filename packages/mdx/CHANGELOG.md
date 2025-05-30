@@ -1,5 +1,13 @@
 # @docube/mdx
 
+## 0.6.3
+
+### Patch Changes
+
+- Fix cache exists check return type
+- Updated dependencies
+  - @docube/common@0.9.3
+
 ## 0.6.2
 
 ### Patch Changes
