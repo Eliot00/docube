@@ -1,5 +1,13 @@
 # @docube/common
 
+## 0.9.1
+
+### Patch Changes
+
+- Strip catalog and workspace protocols from package.json
+- Updated dependencies
+  - docube@0.6.1
+
 ## 0.9.0
 
 ### Minor Changes

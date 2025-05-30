@@ -1,5 +1,14 @@
 # @docube/markdown
 
+## 0.4.1
+
+### Patch Changes
+
+- Strip catalog and workspace protocols from package.json
+- Updated dependencies
+  - @docube/common@0.9.1
+  - docube@0.6.1
+
 ## 0.4.0
 
 ### Minor Changes

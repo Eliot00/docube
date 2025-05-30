@@ -1,5 +1,11 @@
 # docube
 
+## 0.6.1
+
+### Patch Changes
+
+- Strip catalog and workspace protocols from package.json
+
 ## 0.6.0
 
 ### Minor Changes
