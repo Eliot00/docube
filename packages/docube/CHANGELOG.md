@@ -1,5 +1,11 @@
 # docube
 
+## 0.6.0
+
+### Minor Changes
+
+- 8d4464e: Support incremental building
+
 ## 0.5.1
 
 ### Patch Changes

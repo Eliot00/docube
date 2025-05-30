@@ -1,5 +1,16 @@
 # @docube/common
 
+## 0.9.0
+
+### Minor Changes
+
+- 8d4464e: Support incremental building
+
+### Patch Changes
+
+- Updated dependencies [8d4464e]
+  - docube@0.6.0
+
 ## 0.8.1
 
 ### Patch Changes
