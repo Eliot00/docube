@@ -1,5 +1,12 @@
 # @docube/org
 
+## 0.7.2
+
+### Patch Changes
+
+- Updated dependencies
+  - @docube/common@0.9.2
+
 ## 0.7.1
 
 ### Patch Changes

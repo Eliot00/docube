@@ -1,5 +1,11 @@
 # @docube/common
 
+## 0.9.2
+
+### Patch Changes
+
+- Fix namespace conflict
+
 ## 0.9.1
 
 ### Patch Changes

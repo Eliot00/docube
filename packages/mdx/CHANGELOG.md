@@ -1,5 +1,12 @@
 # @docube/mdx
 
+## 0.6.2
+
+### Patch Changes
+
+- Updated dependencies
+  - @docube/common@0.9.2
+
 ## 0.6.1
 
 ### Patch Changes

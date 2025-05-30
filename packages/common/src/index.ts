@@ -14,7 +14,7 @@ import {
 } from "docube";
 import { Effect, identity, Layer } from "effect";
 import { glob } from "glob";
-import fs from "node:fs/promises";
+import { access, readFile, mkdir, writeFile } from "node:fs/promises";
 import camelCase from "camelcase";
 import path from "node:path";
 import crypto from "node:crypto";
@@ -92,9 +92,9 @@ export const LoaderLive = Layer.effect(
               },
               text: Effect.tryPromise({
                 try: () =>
-                  fs
-                    .readFile(fileName, { encoding: "utf-8" })
-                    .then((buf) => buf.toString()),
+                  readFile(fileName, { encoding: "utf-8" }).then((buf) =>
+                    buf.toString(),
+                  ),
                 catch: (error) =>
                   new DocubeError({ message: `LoadError: ${error}` }),
               }),
@@ -118,7 +118,7 @@ export const WriterLive = Layer.succeed(
         const text = yield* file.text;
 
         yield* Effect.tryPromise({
-          try: () => fs.writeFile(targetPath, text, { encoding: "utf-8" }),
+          try: () => writeFile(targetPath, text, { encoding: "utf-8" }),
           catch: (error) =>
             new DocubeError({ message: `Write error: ${error}` }),
         });
@@ -195,7 +195,7 @@ export const ModuleResolverLive = Layer.effect(
             typeStr,
           } = yield* config.getConfig;
           const outputDir = path.join(baseDir, moduleName);
-          yield* Effect.promise(() => fs.mkdir(outputDir, { recursive: true }));
+          yield* Effect.promise(() => mkdir(outputDir, { recursive: true }));
 
           const baseNames = files.map((file) => {
             const extName = path.extname(file._meta.fileName);
@@ -211,19 +211,19 @@ export const ModuleResolverLive = Layer.effect(
           const exportLine = `export const ${variableName} = [${identifiers.join(",")}]`;
           const script = `${imports}\n\n${exportLine}`;
           yield* Effect.promise(() =>
-            fs.writeFile(path.join(outputDir, "index.mjs"), script, {
+            writeFile(path.join(outputDir, "index.mjs"), script, {
               encoding: "utf-8",
             }),
           );
           const parent = path.join(baseDir, "index.mjs");
           const parentExport = `\nexport { ${variableName} } from './${moduleName}'`;
           yield* Effect.promise(() =>
-            fs.writeFile(parent, parentExport, { encoding: "utf-8" }),
+            writeFile(parent, parentExport, { encoding: "utf-8" }),
           );
 
           const dtsPath = path.join(baseDir, "index.d.ts");
           yield* Effect.promise(() =>
-            fs.writeFile(dtsPath, typeStr, { encoding: "utf-8" }),
+            writeFile(dtsPath, typeStr, { encoding: "utf-8" }),
           );
         }),
     };
@@ -248,33 +248,33 @@ export const SkipCheckerLive = Layer.succeed(
           .update(content)
           .digest("hex");
 
-        const cacheHashExists = yield* Effect.promise(() =>
-          fs.exists(cacheHashFilePath),
-        );
+        const cacheHashExists = yield* Effect.tryPromise(() =>
+          access(cacheHashFilePath),
+        ).pipe(Effect.catchAll(() => Effect.succeed(false)));
 
         if (cacheHashExists) {
           const cachedHash = yield* Effect.tryPromise(() =>
-            fs.readFile(cacheHashFilePath, "utf-8"),
+            readFile(cacheHashFilePath, "utf-8"),
           );
 
           if (cachedHash.trim() === currentHash) {
             return true;
           } else {
             yield* Effect.tryPromise(() =>
-              fs.mkdir(path.dirname(cacheHashFilePath), { recursive: true }),
+              mkdir(path.dirname(cacheHashFilePath), { recursive: true }),
             );
             yield* Effect.tryPromise(() =>
-              fs.writeFile(cacheHashFilePath, currentHash, {
+              writeFile(cacheHashFilePath, currentHash, {
                 encoding: "utf-8",
               }),
             );
           }
         } else {
           yield* Effect.tryPromise(() =>
-            fs.mkdir(path.dirname(cacheHashFilePath), { recursive: true }),
+            mkdir(path.dirname(cacheHashFilePath), { recursive: true }),
           );
           yield* Effect.tryPromise(() =>
-            fs.writeFile(cacheHashFilePath, currentHash, { encoding: "utf-8" }),
+            writeFile(cacheHashFilePath, currentHash, { encoding: "utf-8" }),
           );
         }
         return false;
