@@ -25,3 +25,10 @@ export class Writer extends Context.Tag("DocubeWriterService")<
     readonly write: (file: FileLike) => Effect.Effect<void, DocubeError>;
   }
 >() {}
+
+export class SkipChecker extends Context.Tag("SkipCheckerService")<
+  SkipChecker,
+  {
+    readonly shouldSkip: (file: FileLike) => Effect.Effect<boolean>;
+  }
+>() {}

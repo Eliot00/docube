@@ -25,7 +25,13 @@ export class MainProcessor extends Context.Tag("DocubeMainProcessorService")<
   { readonly process: (file: FileLike) => Effect.Effect<void, DocubeError> }
 >() {}
 
-export { type FileLike, type FileMeta, Loader, Writer } from "./io";
+export {
+  type FileLike,
+  type FileMeta,
+  Loader,
+  Writer,
+  SkipChecker,
+} from "./io";
 export { DocubeError } from "./error";
 export {
   NameNormalization,

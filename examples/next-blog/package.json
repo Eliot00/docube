@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "rimraf .docube && bun run generate.ts && next dev",
-    "build": "rimraf .docube && bun run generate.ts && next build",
+    "dev": "bun run generate.ts && next dev",
+    "build": "bun run generate.ts && next build",
     "start": "next start"
   },
   "dependencies": {
