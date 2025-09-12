@@ -14,12 +14,10 @@
     "vfile-matter": "^5.0.0"
   },
   "devDependencies": {
-    "@docube/eslint-config": "workspace:*",
     "@docube/typescript-config": "workspace:*",
     "@effect/schema": "^0.72.3",
     "@types/bun": "catalog:",
     "bun-plugin-dts": "catalog:",
-    "eslint": "catalog:",
     "vfile": "^6.0.2"
   },
   "peerDependencies": {
@@ -39,8 +37,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "bun run build.mjs",
-    "lint": "eslint . --max-warnings 0"
+    "build": "bun run build.mjs"
   },
   "type": "module",
   "types": "dist/index.d.ts"

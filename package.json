@@ -5,7 +5,7 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
-    "lint": "turbo lint",
+    "lint": "oxlint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "prepare": "husky"
   },
@@ -13,21 +13,28 @@
     "@changesets/cli": "^2.29.7",
     "husky": "^9.1.7",
     "lint-staged": "^15.5.2",
+    "oxlint": "^1.15.0",
     "prettier": "3.6.2",
     "turbo": "^2.5.6"
   },
   "packageManager": "bun@1.2.14",
   "workspaces": {
-    "packages": ["packages/*", "examples/*"],
+    "packages": [
+      "packages/*",
+      "examples/*"
+    ],
     "catalog": {
       "@types/bun": "1.2.21",
       "typescript": "^5.9.2",
       "bun-plugin-dts": "^0.3.0",
-      "eslint": "^9.9.0",
       "effect": "^3.7.2"
     }
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": ["bunx prettier --write"]
+    "*.json": "bunx prettier --write",
+    "*.{js,jsx,ts,tsx}": [
+      "bunx prettier --write",
+      "bunx oxlint"
+    ]
   }
 }

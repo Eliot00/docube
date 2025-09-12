@@ -18,15 +18,12 @@
     "JSON"
   ],
   "scripts": {
-    "build": "bun run build.mjs",
-    "lint": "eslint . --max-warnings 0"
+    "build": "bun run build.mjs"
   },
   "devDependencies": {
-    "@docube/eslint-config": "workspace:*",
     "@docube/typescript-config": "workspace:*",
     "bun-plugin-dts": "catalog:",
     "@types/bun": "catalog:",
-    "eslint": "catalog:",
     "slugify": "^1.6.6"
   },
   "peerDependencies": {
