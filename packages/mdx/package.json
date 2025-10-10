@@ -1,16 +1,25 @@
 {
   "name": "@docube/mdx",
   "version": "0.6.4",
-  "publishConfig": {
-    "access": "public"
-  },
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "type": "module",
   "files": [
     "dist"
   ],
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "license": "AGPL-3.0-or-later",
-  "type": "module",
   "keywords": [
     "content",
     "document",
@@ -18,13 +27,12 @@
     "JSON"
   ],
   "scripts": {
-    "build": "bun run build.ts"
+    "build": "bunup --target node --minify --external mdx-bundler"
   },
   "devDependencies": {
     "@docube/typescript-config": "workspace:*",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "oxc-transform": "catalog:",
     "unified": "^11.0.5",
     "vfile": "^6.0.2"
   },

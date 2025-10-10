@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.7",
+    "bunup": "^0.14.20",
     "husky": "^9.1.7",
     "lint-staged": "^15.5.2",
     "oxlint": "^1.15.0",
@@ -26,7 +27,6 @@
     "catalog": {
       "@types/bun": "1.2.23",
       "typescript": "^5.9.2",
-      "oxc-transform": "^0.94.0",
       "effect": "^3.18.4"
     }
   },

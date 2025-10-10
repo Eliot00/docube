@@ -1,6 +1,21 @@
 {
   "name": "docube",
   "version": "0.6.2",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -19,19 +34,12 @@
   "bugs": {
     "url": "https://codeberg.org/Elliot00/docube/issues"
   },
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
   "license": "AGPL-3.0-or-later",
-  "type": "module",
   "scripts": {
-    "build": "bun run build.ts"
+    "build": "bunup --target node --minify"
   },
   "devDependencies": {
     "@docube/typescript-config": "workspace:*",
-    "oxc-transform": "catalog:",
     "vfile": "^6.0.2"
   },
   "peerDependencies": {
