@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: AGPL-3.0-or-later */
 
 import { Context, Layer, Effect } from "effect";
-import { AST, Schema } from "@effect/schema";
+import { Schema, SchemaAST } from "effect";
 import {
   NameNormalization,
   type NormalizedName,
@@ -85,7 +85,7 @@ export function makeAppConfig<F extends Schema.Struct.Fields>(
           >(schema as any)(raw), // eslint-disable-line
         );
 
-      const typeStr = `\ntype ${newOutput.typeName} = ${AST.encodedAST(schema.ast).toString()}\nexport declare const ${newOutput.variableName}: ${newOutput.typeName}[]`;
+      const typeStr = `\ntype ${newOutput.typeName} = ${SchemaAST.encodedAST(schema.ast).toString()}\nexport declare const ${newOutput.variableName}: ${newOutput.typeName}[]`;
       return {
         getConfig: Effect.succeed({
           ...config,

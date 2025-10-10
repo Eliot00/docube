@@ -18,13 +18,12 @@
     "JSON"
   ],
   "scripts": {
-    "build": "bun run build.mjs"
+    "build": "bun run build.ts"
   },
   "devDependencies": {
     "@docube/typescript-config": "workspace:*",
-    "@effect/schema": "^0.72.3",
     "@types/bun": "catalog:",
-    "bun-plugin-dts": "catalog:",
+    "oxc-transform": "catalog:",
     "uniorg": "^1.3.0"
   },
   "dependencies": {

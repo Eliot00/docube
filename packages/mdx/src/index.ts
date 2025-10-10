@@ -2,7 +2,7 @@
 
 import type { Pluggable } from "unified";
 import { bundleMDX } from "mdx-bundler";
-import { Effect, Layer } from "effect";
+import { Effect, Layer, type Schema } from "effect";
 import { ContentConverter } from "docube";
 import {
   ContentValidatorLive,
@@ -15,7 +15,6 @@ import {
   type UserConfig,
   makeOutputMeta,
 } from "@docube/common";
-import type * as Schema from "@effect/schema/Schema";
 
 type MdxBundleOptions = {
   readonly remarkPlugins?: Pluggable[];

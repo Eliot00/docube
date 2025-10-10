@@ -1,5 +1,5 @@
 import { ContentConverter } from "docube";
-import { Layer, Effect } from "effect";
+import { Layer, Effect, type Schema } from "effect";
 import rehypeStringify from "rehype-stringify";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
@@ -17,7 +17,6 @@ import {
   ModuleResolverLive,
   type UserConfig,
 } from "@docube/common";
-import type * as Schema from "@effect/schema/Schema";
 
 type Options = {
   readonly allowDangerousHtml?: boolean;

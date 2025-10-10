@@ -17,17 +17,17 @@
     "prettier": "3.6.2",
     "turbo": "^2.5.6"
   },
-  "packageManager": "bun@1.2.14",
+  "packageManager": "bun@1.2.23",
   "workspaces": {
     "packages": [
       "packages/*",
       "examples/*"
     ],
     "catalog": {
-      "@types/bun": "1.2.21",
+      "@types/bun": "1.2.23",
       "typescript": "^5.9.2",
-      "bun-plugin-dts": "^0.3.0",
-      "effect": "^3.7.2"
+      "oxc-transform": "^0.94.0",
+      "effect": "^3.18.4"
     }
   },
   "lint-staged": {

@@ -15,9 +15,8 @@
   },
   "devDependencies": {
     "@docube/typescript-config": "workspace:*",
-    "@effect/schema": "^0.72.3",
     "@types/bun": "catalog:",
-    "bun-plugin-dts": "catalog:",
+    "oxc-transform": "catalog:",
     "vfile": "^6.0.2"
   },
   "peerDependencies": {
@@ -37,7 +36,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "bun run build.mjs"
+    "build": "bun run build.ts"
   },
   "type": "module",
   "types": "dist/index.d.ts"

@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: AGPL-3.0-or-later */
 
-import { Layer, Effect } from "effect";
+import { Layer, Effect, type Schema } from "effect";
 import { type Pluggable } from "unified";
 import {
   makeAppConfig,
@@ -12,7 +12,6 @@ import {
   ContentValidatorLive,
   type UserConfig,
 } from "@docube/common";
-import type * as Schema from "@effect/schema/Schema";
 
 import { makeUnifiedLive } from "./unified";
 import { ContentConverterLive } from "./content";
