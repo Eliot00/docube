@@ -1,5 +1,14 @@
 # @docube/org
 
+## 0.7.5
+
+### Patch Changes
+
+- aa65d73: Fix .d.ts generation
+- Updated dependencies [aa65d73]
+  - @docube/common@0.9.5
+  - docube@0.6.3
+
 ## 0.7.4
 
 ### Patch Changes

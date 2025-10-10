@@ -1,5 +1,11 @@
 # docube
 
+## 0.6.3
+
+### Patch Changes
+
+- aa65d73: Fix .d.ts generation
+
 ## 0.6.2
 
 ### Patch Changes
