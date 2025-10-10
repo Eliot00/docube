@@ -1,5 +1,14 @@
 # @docube/markdown
 
+## 0.4.5
+
+### Patch Changes
+
+- 878b2ad: Bump effect-ts to v3.18.4
+- Updated dependencies [878b2ad]
+  - @docube/common@0.9.4
+  - docube@0.6.2
+
 ## 0.4.4
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # docube
 
+## 0.6.2
+
+### Patch Changes
+
+- 878b2ad: Bump effect-ts to v3.18.4
+
 ## 0.6.1
 
 ### Patch Changes
