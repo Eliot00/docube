@@ -1,5 +1,11 @@
 # docube
 
+## 0.6.4
+
+### Patch Changes
+
+- b2b732f: Fix type generation
+
 ## 0.6.3
 
 ### Patch Changes

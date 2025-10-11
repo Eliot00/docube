@@ -1,5 +1,14 @@
 # @docube/mdx
 
+## 0.6.6
+
+### Patch Changes
+
+- b2b732f: Fix type generation
+- Updated dependencies [b2b732f]
+  - @docube/common@0.9.6
+  - docube@0.6.4
+
 ## 0.6.5
 
 ### Patch Changes

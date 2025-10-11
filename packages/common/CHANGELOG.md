@@ -1,5 +1,13 @@
 # @docube/common
 
+## 0.9.6
+
+### Patch Changes
+
+- b2b732f: Fix type generation
+- Updated dependencies [b2b732f]
+  - docube@0.6.4
+
 ## 0.9.5
 
 ### Patch Changes
