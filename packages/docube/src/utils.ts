@@ -6,10 +6,17 @@ import type { VFile } from "vfile";
 import { DocubeError } from "./error";
 import type { FileLike } from "./io";
 
-export class Unified extends Context.Tag("DocubeUnifiedService")<
+const UnifiedBase: Context.TagClass<
+  Unified,
+  "DocubeUnifiedService",
+  {
+    readonly process: (content: string) => Effect.Effect<VFile, DocubeError>;
+  }
+> = Context.Tag("DocubeUnifiedService")<
   Unified,
   { readonly process: (content: string) => Effect.Effect<VFile, DocubeError> }
->() {}
+>();
+export class Unified extends UnifiedBase {}
 
 export type NormalizedName = {
   typeName: string;
@@ -17,37 +24,68 @@ export type NormalizedName = {
   variableName: string;
 };
 
-export class NameNormalization extends Context.Tag(
+const NameNormalizationBase: Context.TagClass<
+  NameNormalization,
   "DocubeNameNormalizationService",
-)<
+  {
+    readonly normalize: (name: string) => Effect.Effect<NormalizedName>;
+  }
+> = Context.Tag("DocubeNameNormalizationService")<
   NameNormalization,
   { readonly normalize: (name: string) => Effect.Effect<NormalizedName> }
->() {}
+>();
+export class NameNormalization extends NameNormalizationBase {}
 
-export class ModuleResolver extends Context.Tag("DocubeModuleResolverService")<
+const ModuleResolverBase: Context.TagClass<
+  ModuleResolver,
+  "DocubeModuleResolverService",
+  {
+    readonly resolve: (files: FileLike[]) => Effect.Effect<void, DocubeError>;
+  }
+> = Context.Tag("DocubeModuleResolverService")<
   ModuleResolver,
   { readonly resolve: (files: FileLike[]) => Effect.Effect<void, DocubeError> }
->() {}
+>();
+export class ModuleResolver extends ModuleResolverBase {}
 
-export class FileConverter extends Context.Tag("DocubeFileConverterService")<
+const FileConverterBase: Context.TagClass<
+  FileConverter,
+  "DocubeFileConverterService",
+  {
+    readonly convert: (file: FileLike) => Effect.Effect<FileLike, DocubeError>;
+  }
+> = Context.Tag("DocubeFileConverterService")<
   FileConverter,
   { readonly convert: (file: FileLike) => Effect.Effect<FileLike, DocubeError> }
->() {}
+>();
+export class FileConverter extends FileConverterBase {}
 
-export class ContentConverter extends Context.Tag(
+const ContentConverterBase: Context.TagClass<
+  ContentConverter,
   "DocubeContentConverterService",
-)<
+  {
+    readonly convert: (file: FileLike) => Effect.Effect<unknown, DocubeError>;
+  }
+> = Context.Tag("DocubeContentConverterService")<
   ContentConverter,
   { readonly convert: (file: FileLike) => Effect.Effect<unknown, DocubeError> }
->() {}
+>();
+export class ContentConverter extends ContentConverterBase {}
 
-export class ContentValidator extends Context.Tag(
+const ContentValidatorBase: Context.TagClass<
+  ContentValidator,
   "DocubeContentValidatorService",
-)<
+  {
+    readonly validate: (
+      content: unknown,
+    ) => Effect.Effect<unknown, DocubeError>;
+  }
+> = Context.Tag("DocubeContentValidatorService")<
   ContentValidator,
   {
     readonly validate: (
       content: unknown,
     ) => Effect.Effect<unknown, DocubeError>;
   }
->() {}
+>();
+export class ContentValidator extends ContentValidatorBase {}

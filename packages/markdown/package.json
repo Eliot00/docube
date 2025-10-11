@@ -5,17 +5,8 @@
   "files": [
     "dist"
   ],
-  "module": "./dist/index.js",
+  "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      }
-    },
-    "./package.json": "./package.json"
-  },
   "dependencies": {
     "@docube/common": "workspace:*",
     "docube": "workspace:*",
@@ -30,6 +21,7 @@
   "devDependencies": {
     "@docube/typescript-config": "workspace:*",
     "@types/bun": "catalog:",
+    "typescript": "catalog:",
     "vfile": "^6.0.2"
   },
   "peerDependencies": {
@@ -46,6 +38,6 @@
     "access": "public"
   },
   "scripts": {
-    "build": "bunup --target node --minify --external unified"
+    "build": "bun build src/index.ts --target node --minify --external mdx-bundler --outdir=dist && tsc --emitDeclarationOnly"
   }
 }

@@ -7,20 +7,21 @@ import pluralize from "pluralize-esm";
 import slugify from "slugify";
 import path from "node:path";
 
-export const NameNormalizationLive = Layer.succeed(
-  NameNormalization,
-  NameNormalization.of({
-    normalize: (name) => {
-      const capital = camelCase(name, { pascalCase: true });
-      const camel = camelCase(name);
-      return Effect.succeed({
-        typeName: capital,
-        moduleName: pluralize(camel),
-        variableName: `all${pluralize(capital)}`,
-      });
-    },
-  }),
-);
+export const NameNormalizationLive: Layer.Layer<NameNormalization> =
+  Layer.succeed(
+    NameNormalization,
+    NameNormalization.of({
+      normalize: (name) => {
+        const capital = camelCase(name, { pascalCase: true });
+        const camel = camelCase(name);
+        return Effect.succeed({
+          typeName: capital,
+          moduleName: pluralize(camel),
+          variableName: `all${pluralize(capital)}`,
+        });
+      },
+    }),
+  );
 
 export type OutputMeta = {
   readonly sourceFileName: string;

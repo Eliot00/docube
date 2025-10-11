@@ -53,14 +53,21 @@ export interface UserConfig<in out F extends Schema.Struct.Fields>
   ) => string;
 }
 
-export class Config extends Context.Tag("DocubeConfigService")<
+const ConfigBase: Context.TagClass<
+  Config,
+  "DocubeConfigService",
+  {
+    readonly getConfig: Effect.Effect<AppConfig>;
+  }
+> = Context.Tag("DocubeConfigService")<
   Config,
   { readonly getConfig: Effect.Effect<AppConfig> }
->() {}
+>();
+export class Config extends ConfigBase {}
 
 export function makeAppConfig<F extends Schema.Struct.Fields>(
   config: UserConfig<F>,
-) {
+): Layer.Layer<Config> {
   return Layer.effect(
     Config,
     Effect.gen(function* () {
@@ -103,7 +110,17 @@ export function makeAppConfig<F extends Schema.Struct.Fields>(
 
 export function makeInternalSchema<F extends Schema.Struct.Fields>(
   config: UserConfig<F>,
-) {
+): Schema.Struct<
+  F & {
+    body: typeof Schema.String;
+    _meta: Schema.Struct<{
+      sourceFileName: typeof Schema.String;
+      sourceDirectory: typeof Schema.String;
+      sourceFileType: typeof Schema.String;
+      slug: typeof Schema.String;
+    }>;
+  }
+> {
   const { fields } = config;
   const userFields = fields(Schema);
   return Schema.Struct({

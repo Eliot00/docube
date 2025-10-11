@@ -24,7 +24,9 @@ type Options = {
   readonly rehypePlugins?: Pluggable[];
 };
 
-export function makeMarkdownConverter(options: Options) {
+export function makeMarkdownConverter(
+  options: Options,
+): Layer.Layer<ContentConverter, never, never> {
   return Layer.succeed(
     ContentConverter,
     ContentConverter.of({
@@ -75,7 +77,7 @@ export type TransformOptions<F extends Schema.Struct.Fields> = UserConfig<F> &
 
 export function transform<F extends Schema.Struct.Fields>(
   options: TransformOptions<F>,
-) {
+): void {
   const AppConfigLive = makeAppConfig(options);
   const ContentConverterLive = makeMarkdownConverter(options);
 

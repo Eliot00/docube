@@ -22,9 +22,9 @@ export type TransformOptions<F extends Schema.Struct.Fields> = UserConfig<F> & {
 
 export function transform<F extends Schema.Struct.Fields>(
   options: TransformOptions<F>,
-) {
+): void {
   const AppConfigLive = makeAppConfig(options);
-  const UnifiedLive = makeUnifiedLive({ rehypePlugins: options.rehypePlugins });
+  const UnifiedLive = makeUnifiedLive(options);
 
   const transformer = makeTransformer({
     loader: LoaderLive.pipe(Layer.provide(AppConfigLive)),

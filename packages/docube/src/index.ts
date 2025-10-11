@@ -1,12 +1,18 @@
 /* SPDX-License-Identifier: AGPL-3.0-or-later */
 
-import { Context, Effect, Option } from "effect";
+import * as Effect from "effect/Effect";
+import * as Context from "effect/Context";
+import * as Option from "effect/Option";
 
 import { Loader, type FileLike } from "./io";
 import { ModuleResolver } from "./utils";
 import type { DocubeError } from "./error";
 
-export const transformerMain = Effect.gen(function* () {
+export const transformerMain: Effect.Effect<
+  void,
+  DocubeError,
+  Loader | MainProcessor
+> = Effect.gen(function* () {
   const loader = yield* Loader;
   const mainProcessor = yield* MainProcessor;
   const maybeModuleResolver = yield* Effect.serviceOption(ModuleResolver);
@@ -20,10 +26,17 @@ export const transformerMain = Effect.gen(function* () {
   yield* Effect.all(files.map(mainProcessor.process));
 });
 
-export class MainProcessor extends Context.Tag("DocubeMainProcessorService")<
+const MainProcessorBase: Context.TagClass<
+  MainProcessor,
+  "DocubeMainProcessorService",
+  {
+    readonly process: (file: FileLike) => Effect.Effect<void, DocubeError>;
+  }
+> = Context.Tag("DocubeMainProcessorService")<
   MainProcessor,
   { readonly process: (file: FileLike) => Effect.Effect<void, DocubeError> }
->() {}
+>();
+export class MainProcessor extends MainProcessorBase {}
 
 export {
   type FileLike,

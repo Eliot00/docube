@@ -21,7 +21,9 @@ type MdxBundleOptions = {
   readonly rehypePlugins?: Pluggable[];
 };
 
-export function makeMdxConverter(options: MdxBundleOptions) {
+export function makeMdxConverter(
+  options: MdxBundleOptions,
+): Layer.Layer<ContentConverter, never, never> {
   const converter = Layer.succeed(
     ContentConverter,
     ContentConverter.of({
@@ -70,7 +72,7 @@ export type TransformOptions<F extends Schema.Struct.Fields> = UserConfig<F> &
 
 export function transform<F extends Schema.Struct.Fields>(
   options: TransformOptions<F>,
-) {
+): void {
   const AppConfigLive = makeAppConfig(options);
   const ContentConverterLive = makeMdxConverter(options);
 

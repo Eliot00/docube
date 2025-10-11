@@ -2,7 +2,11 @@ import { ContentConverter, Unified } from "docube";
 import { Layer, Effect } from "effect";
 import { makeOutputMeta } from "@docube/common";
 
-export const ContentConverterLive = Layer.effect(
+export const ContentConverterLive: Layer.Layer<
+  ContentConverter,
+  never,
+  Unified
+> = Layer.effect(
   ContentConverter,
   Effect.gen(function* () {
     const unified = yield* Unified;

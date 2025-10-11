@@ -13,7 +13,7 @@ import {
   SkipChecker,
 } from "docube";
 import { Effect, identity, Layer } from "effect";
-import { glob } from "glob";
+import { glob, type GlobOptionsWithFileTypesUnset } from "glob";
 import { access, readFile, mkdir, writeFile } from "node:fs/promises";
 import camelCase from "camelcase";
 import path from "node:path";
@@ -29,7 +29,9 @@ export type TransformerDependencies = {
   readonly skipChecker?: Layer.Layer<SkipChecker, DocubeError>;
 };
 
-export function makeTransformer(deps: TransformerDependencies) {
+export function makeTransformer(
+  deps: TransformerDependencies,
+): Effect.Effect<void, DocubeError> {
   const {
     loader,
     fileConverter,
@@ -51,7 +53,11 @@ export function makeTransformer(deps: TransformerDependencies) {
   );
 }
 
-export const MainProcessorLive = Layer.effect(
+export const MainProcessorLive: Layer.Layer<
+  MainProcessor,
+  never,
+  FileConverter | Writer | SkipChecker
+> = Layer.effect(
   MainProcessor,
   Effect.gen(function* () {
     const fileConverter = yield* FileConverter;
@@ -73,15 +79,24 @@ export const MainProcessorLive = Layer.effect(
   }),
 );
 
-export const LoaderLive = Layer.effect(
+export const LoaderLive: Layer.Layer<Loader, never, Config> = Layer.effect(
   Loader,
   Effect.gen(function* () {
     const config = yield* Config;
     return {
       load: Effect.gen(function* () {
         const { directory, include, exclude } = yield* config.getConfig;
+
+        const globOptions: GlobOptionsWithFileTypesUnset = {
+          cwd: directory,
+          absolute: true,
+        };
+        if (exclude) {
+          globOptions.ignore = exclude;
+        }
+
         const fileNames = yield* Effect.promise(() =>
-          glob(include, { cwd: directory, ignore: exclude, absolute: true }),
+          glob(include, globOptions),
         );
         return yield* Effect.all(
           fileNames.map((fileName) =>
@@ -106,7 +121,7 @@ export const LoaderLive = Layer.effect(
   }),
 );
 
-export const WriterLive = Layer.succeed(
+export const WriterLive: Layer.Layer<Writer> = Layer.succeed(
   Writer,
   Writer.of({
     write: (file) =>
@@ -126,7 +141,11 @@ export const WriterLive = Layer.succeed(
   }),
 );
 
-export const FileConverterLive = Layer.effect(
+export const FileConverterLive: Layer.Layer<
+  FileConverter,
+  never,
+  Config | ContentValidator | ContentConverter
+> = Layer.effect(
   FileConverter,
   Effect.gen(function* () {
     const config = yield* Config;
@@ -169,7 +188,11 @@ export const FileConverterLive = Layer.effect(
   }),
 );
 
-export const ContentValidatorLive = Layer.effect(
+export const ContentValidatorLive: Layer.Layer<
+  ContentValidator,
+  never,
+  Config
+> = Layer.effect(
   ContentValidator,
   Effect.gen(function* () {
     const config = yield* Config;
@@ -183,54 +206,57 @@ export const ContentValidatorLive = Layer.effect(
   }),
 );
 
-export const ModuleResolverLive = Layer.effect(
-  ModuleResolver,
-  Effect.gen(function* () {
-    const config = yield* Config;
-    return {
-      resolve: (files) =>
-        Effect.gen(function* () {
-          const {
-            output: { baseDir, moduleName, variableName },
-            typeStr,
-          } = yield* config.getConfig;
-          const outputDir = path.join(baseDir, moduleName);
-          yield* Effect.promise(() => mkdir(outputDir, { recursive: true }));
+export const ModuleResolverLive: Layer.Layer<ModuleResolver, never, Config> =
+  Layer.effect(
+    ModuleResolver,
+    Effect.gen(function* () {
+      const config = yield* Config;
+      return {
+        resolve: (files) =>
+          Effect.gen(function* () {
+            const {
+              output: { baseDir, moduleName, variableName },
+              typeStr,
+            } = yield* config.getConfig;
+            const outputDir = path.join(baseDir, moduleName);
+            yield* Effect.promise(() => mkdir(outputDir, { recursive: true }));
 
-          const baseNames = files.map((file) => {
-            const extName = path.extname(file._meta.fileName);
-            return path.basename(file._meta.fileName, extName);
-          });
+            const baseNames = files.map((file) => {
+              const extName = path.extname(file._meta.fileName);
+              return path.basename(file._meta.fileName, extName);
+            });
 
-          const imports = baseNames
-            .map((baseName) => {
-              return `import ${camelCase(baseName)} from './${baseName}.json' with { type: 'json' }`;
-            })
-            .join("\n");
-          const identifiers = baseNames.map((baseName) => camelCase(baseName));
-          const exportLine = `export const ${variableName} = [${identifiers.join(",")}]`;
-          const script = `${imports}\n\n${exportLine}`;
-          yield* Effect.promise(() =>
-            writeFile(path.join(outputDir, "index.mjs"), script, {
-              encoding: "utf-8",
-            }),
-          );
-          const parent = path.join(baseDir, "index.mjs");
-          const parentExport = `\nexport { ${variableName} } from './${moduleName}'`;
-          yield* Effect.promise(() =>
-            writeFile(parent, parentExport, { encoding: "utf-8" }),
-          );
+            const imports = baseNames
+              .map((baseName) => {
+                return `import ${camelCase(baseName)} from './${baseName}.json' with { type: 'json' }`;
+              })
+              .join("\n");
+            const identifiers = baseNames.map((baseName) =>
+              camelCase(baseName),
+            );
+            const exportLine = `export const ${variableName} = [${identifiers.join(",")}]`;
+            const script = `${imports}\n\n${exportLine}`;
+            yield* Effect.promise(() =>
+              writeFile(path.join(outputDir, "index.mjs"), script, {
+                encoding: "utf-8",
+              }),
+            );
+            const parent = path.join(baseDir, "index.mjs");
+            const parentExport = `\nexport { ${variableName} } from './${moduleName}'`;
+            yield* Effect.promise(() =>
+              writeFile(parent, parentExport, { encoding: "utf-8" }),
+            );
 
-          const dtsPath = path.join(baseDir, "index.d.ts");
-          yield* Effect.promise(() =>
-            writeFile(dtsPath, typeStr, { encoding: "utf-8" }),
-          );
-        }),
-    };
-  }),
-);
+            const dtsPath = path.join(baseDir, "index.d.ts");
+            yield* Effect.promise(() =>
+              writeFile(dtsPath, typeStr, { encoding: "utf-8" }),
+            );
+          }),
+      };
+    }),
+  );
 
-export const SkipCheckerLive = Layer.succeed(
+export const SkipCheckerLive: Layer.Layer<SkipChecker> = Layer.succeed(
   SkipChecker,
   SkipChecker.of({
     shouldSkip: (file) =>

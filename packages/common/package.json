@@ -5,17 +5,8 @@
   "files": [
     "dist"
   ],
-  "module": "./dist/index.js",
+  "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      }
-    },
-    "./package.json": "./package.json"
-  },
   "publishConfig": {
     "access": "public"
   },
@@ -27,11 +18,12 @@
     "JSON"
   ],
   "scripts": {
-    "build": "bunup --target node --minify"
+    "build": "bun build src/index.ts --target node --minify --outdir=dist && tsc --emitDeclarationOnly"
   },
   "devDependencies": {
     "@docube/typescript-config": "workspace:*",
     "@types/bun": "catalog:",
+    "typescript": "catalog:",
     "slugify": "^1.6.6"
   },
   "peerDependencies": {

@@ -7,10 +7,12 @@ import { Effect, Layer } from "effect";
 import { Unified } from "docube";
 
 export type Options = {
-  rehypePlugins?: Pluggable[];
+  readonly rehypePlugins?: Pluggable[];
 };
 
-export function makeUnifiedLive(options?: Options) {
+export function makeUnifiedLive(
+  options?: Options,
+): Layer.Layer<Unified, never, never> {
   const processor = unified()
     .use(parse)
     .use(extractKeywords)
