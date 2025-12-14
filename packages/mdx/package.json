@@ -38,6 +38,6 @@
     "docube": "workspace:*",
     "effect": "catalog:",
     "esbuild": "^0.23.1",
-    "mdx-bundler": "^10.0.3"
+    "mdx-bundler": "^10.1.1"
   }
 }
