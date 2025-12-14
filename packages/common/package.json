@@ -33,7 +33,7 @@
     "camelcase": "^8.0.0",
     "docube": "workspace:*",
     "effect": "catalog:",
-    "glob": "^11.0.0",
+    "glob": "^13.0.0",
     "pluralize-esm": "^9.0.5"
   }
 }
