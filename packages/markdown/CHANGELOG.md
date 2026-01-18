@@ -1,5 +1,13 @@
 # @docube/markdown
 
+## 0.4.8
+
+### Patch Changes
+
+- 77357cc: Upgrade dependencies
+- Updated dependencies [77357cc]
+  - @docube/common@0.9.7
+
 ## 0.4.7
 
 ### Patch Changes

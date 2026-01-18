@@ -1,5 +1,13 @@
 # @docube/mdx
 
+## 0.6.7
+
+### Patch Changes
+
+- 77357cc: Upgrade dependencies
+- Updated dependencies [77357cc]
+  - @docube/common@0.9.7
+
 ## 0.6.6
 
 ### Patch Changes
