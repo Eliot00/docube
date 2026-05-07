@@ -123,7 +123,7 @@
   },
   "catalog": {
     "@types/bun": "1.2.23",
-    "effect": "^3.18.4",
+    "effect": "^3.21.2",
     "typescript": "^5.9.2",
   },
   "packages": {
@@ -373,7 +373,7 @@
 
     "docube": ["docube@workspace:packages/docube"],
 
-    "effect": ["effect@3.19.12", "", { "dependencies": { "@standard-schema/spec": "^1.0.0", "fast-check": "^3.23.1" } }, "sha512-7F9RGTrCTC3D7nh9Zw+3VlJWwZgo5k33KA+476BAaD0rKIXKZsY/jQ+ipyhR/Avo239Fi6GqAVFs1mqM1IJ7yg=="],
+    "effect": ["effect@3.21.2", "", { "dependencies": { "@standard-schema/spec": "^1.0.0", "fast-check": "^3.23.1" } }, "sha512-rXd2FGDM8KdjSIrc+mqEELo7ScW7xTVxEf1iInmPSpIde9/nyGuFM710cjTo7/EreGXiUX2MOonPpprbz2XHCg=="],
 
     "emoji-regex": ["emoji-regex@10.3.0", "", {}, "sha512-QpLs9D9v9kArv4lfDEgg1X/gN5XLnf/A6l9cs8SPZLRZR3ZkY9+kwIQTxm+fsSej5UMYGE8fdoaZVIBlqG0XTw=="],
 
