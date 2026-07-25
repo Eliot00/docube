@@ -16,16 +16,16 @@
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.2",
     "unified": "^11.0.5",
-    "vfile-matter": "^5.0.0"
+    "vfile-matter": "^5.0.1"
   },
   "devDependencies": {
     "@docube/typescript-config": "workspace:*",
     "@types/bun": "catalog:",
     "typescript": "catalog:",
-    "vfile": "^6.0.2"
+    "vfile": "^6.0.3"
   },
   "peerDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^7.0.2"
   },
   "keywords": [
     "content",

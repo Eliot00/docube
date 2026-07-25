@@ -32,10 +32,10 @@
   "devDependencies": {
     "@docube/typescript-config": "workspace:*",
     "typescript": "catalog:",
-    "vfile": "^6.0.2"
+    "vfile": "^6.0.3"
   },
   "peerDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^7.0.2"
   },
   "dependencies": {
     "effect": "catalog:"
