@@ -35,30 +35,48 @@ bun add @docube/org --dev
   #+begin_src typescript
   import { transform } from "@docube/org";
 
-  transform({
+  await transform({
     name: "Post",
-    directory: "content",
+    directory: "posts",
     include: "**/*.org",
     fields: (s) => ({
       title: s.String,
-      date: s.String,
+      summary: s.String,
+      tags: s.Array(s.String),
+      publishedAt: s.String,
     }),
     rehypePlugins: [/* rehypePrettyCode, rehypeSlug, ... */],
+    contentTransform: (converted) => {
+      // Org keywords come out snake_case with tags as a single string —
+      // normalize them into the shape declared in `fields`.
+      const { published_at, tags, ...rest } = converted;
+      return {
+        ...rest,
+        publishedAt: published_at,
+        tags: String(tags).trim().split(" "),
+      };
+    },
   });
   #+end_src
 
-2. Start writing content in ~content~:
+2. Start writing content in ~posts~:
 
   #+begin_src orgmode
   #+TITLE: Hello World
   #+SUMMARY: This is my first post
+  #+TAGS: news demo
+  #+PUBLISHED_AT: 2026-01-01
 
   * Hello World
 
   This is my first post.
   #+end_src
 
-3. Run ~generate.ts~, recommend use ~esrun~ or ~bun~.
+3. Run ~generate.ts~, recommend use ~esrun~ or ~bun~:
+
+  #+begin_src shell
+  bun generate.ts
+  #+end_src
 
 4. Update your ~tsconfig.json~:
 
@@ -77,8 +95,8 @@ bun add @docube/org --dev
     return (
       <ul>
         {allPosts.map((post) => (
-          <li key={post._meta.path}>
-            <a href={`/posts/${post._meta.path}`}>
+          <li key={post._meta.slug}>
+            <a href={`/posts/${post._meta.slug}`}>
               <h3>{post.title}</h3>
               <p>{post.summary}</p>
             </a>
@@ -93,10 +111,18 @@ bun add @docube/org --dev
   import { allPosts } from "@docube/generated";
 
   export function Post({ slug }) {
-    const post = allPosts.find(p => p._mata.slug === slug)
+    const post = allPosts.find((p) => p._meta.slug === slug);
 
     return (
       <article dangerouslySetInnerHTML={{ __html: post.body }} />
-    )
+    );
   }
   #+end_src
+
+** Notes
+
+- ~contentTransform~ runs after the org file is converted (frontmatter + ~_meta~ + ~body~)
+  and before schema validation. Use it to rename keywords, coerce types, or drop
+  fields that are not part of your ~fields~ schema.
+- ~transform~ returns a ~Promise~ — validation failures and IO errors reject it,
+  so running ~bun generate.ts~ fails loudly instead of exiting silently.

@@ -35,7 +35,7 @@ bun add @docube/mdx --dev
   #+begin_src typescript
   import { transform } from "@docube/mdx";
 
-  transform({
+  await transform({
     name: "Post",
     directory: "content",
     include: "**/*.mdx",
@@ -45,6 +45,8 @@ bun add @docube/mdx --dev
     }),
     remarkPlugins: [/* remarkGfm, ... */],
     rehypePlugins: [/* rehypePrettyCode, rehypeSlug, ... */],
+    // optional: normalize frontmatter before schema validation
+    contentTransform: (converted) => converted,
   });
   #+end_src
 
@@ -61,7 +63,11 @@ bun add @docube/mdx --dev
   This is my first post.
   #+end_src
 
-3. Run ~generate.ts~, recommend use ~esrun~ or ~bun~.
+3. Run ~generate.ts~, recommend use ~esrun~ or ~bun~:
+
+  #+begin_src shell
+  bun generate.ts
+  #+end_src
 
 4. Update your ~tsconfig.json~:
 
@@ -80,8 +86,8 @@ bun add @docube/mdx --dev
     return (
       <ul>
         {allPosts.map((post) => (
-          <li key={post._meta.path}>
-            <a href={`/posts/${post._meta.path}`}>
+          <li key={post._meta.slug}>
+            <a href={`/posts/${post._meta.slug}`}>
               <h3>{post.title}</h3>
               <p>{post.summary}</p>
             </a>
@@ -97,7 +103,7 @@ bun add @docube/mdx --dev
   import { getMDXComponent } from 'mdx-bundler/client'
 
   export function Post({ slug }) {
-    const post = allPosts.find(p => p._mata.slug === slug)
+    const post = allPosts.find((p) => p._meta.slug === slug);
 
     // https://github.com/kentcdodds/mdx-bundler?tab=readme-ov-file#usage
     const MDXContent = getMDXComponent(post.body)

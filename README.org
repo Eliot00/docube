@@ -2,6 +2,33 @@
 
 Docube is a *libre* content SDK that validates and transforms your *any* content into *any* format. By default, it converts text into type-safe JSON data that you can easily import into your application's pages.
 
+** Quick start
+
+Transform a folder of org files into type-safe JSON collections with a single
+call — no Effect or Layer boilerplate required.
+
+#+begin_src typescript
+import { transform } from "@docube/org";
+
+await transform({
+  name: "Post",
+  directory: "posts",
+  include: "**/*.org",
+  fields: (s) => ({
+    title: s.String,
+    tags: s.Array(s.String),
+  }),
+  rehypePlugins: [/* ... */],
+  contentTransform: (converted) => ({
+    ...converted,
+    tags: String(converted.tags).trim().split(" "),
+  }),
+});
+#+end_src
+
+The generated files land in ~.docube/generated/~ by default. See each package's
+README for format-specific usage.
+
 ** Workflow
 
 #+begin_src mermaid
