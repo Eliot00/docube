@@ -1,39 +1,39 @@
 {
-  "name": "@docube/common",
-  "version": "0.9.8",
-  "type": "module",
-  "files": [
-    "dist"
-  ],
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "publishConfig": {
-    "access": "public"
-  },
-  "license": "AGPL-3.0-or-later",
-  "keywords": [
-    "content",
-    "document",
-    "utils",
-    "JSON"
-  ],
-  "scripts": {
-    "build": "bun build src/index.ts --target node --minify --outdir=dist && tsc --emitDeclarationOnly"
-  },
-  "devDependencies": {
-    "@docube/typescript-config": "workspace:*",
-    "@types/bun": "catalog:",
-    "typescript": "catalog:",
-    "slugify": "^1.6.9"
-  },
-  "peerDependencies": {
-    "typescript": "^7.0.2"
-  },
-  "dependencies": {
-    "camelcase": "^9.0.0",
-    "docube": "workspace:*",
-    "effect": "catalog:",
-    "glob": "^13.0.6",
-    "pluralize-esm": "^9.0.5"
-  }
+	"name": "@docube/common",
+	"version": "0.9.8",
+	"keywords": [
+		"JSON",
+		"content",
+		"document",
+		"utils"
+	],
+	"license": "AGPL-3.0-or-later",
+	"files": [
+		"dist"
+	],
+	"type": "module",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"build": "bun build src/index.ts --target node --minify --outdir=dist && tsc -p tsconfig.build.json --emitDeclarationOnly"
+	},
+	"dependencies": {
+		"camelcase": "^9.0.0",
+		"docube": "workspace:*",
+		"effect": "catalog:",
+		"glob": "^13.0.6",
+		"pluralize-esm": "^9.0.5"
+	},
+	"devDependencies": {
+		"@docube/typescript-config": "workspace:*",
+		"@types/bun": "catalog:",
+		"slugify": "^1.6.9",
+		"typescript": "catalog:"
+	},
+	"peerDependencies": {
+		"typescript": "^7.0.2"
+	}
 }

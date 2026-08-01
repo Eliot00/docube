@@ -1,43 +1,43 @@
 {
-  "name": "@docube/markdown",
-  "version": "0.4.9",
-  "type": "module",
-  "files": [
-    "dist"
-  ],
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "dependencies": {
-    "@docube/common": "workspace:*",
-    "docube": "workspace:*",
-    "effect": "catalog:",
-    "rehype-raw": "^7.0.0",
-    "remark-frontmatter": "^5.0.0",
-    "remark-parse": "^11.0.0",
-    "remark-rehype": "^11.1.2",
-    "unified": "^11.0.5",
-    "vfile-matter": "^5.0.1"
-  },
-  "devDependencies": {
-    "@docube/typescript-config": "workspace:*",
-    "@types/bun": "catalog:",
-    "typescript": "catalog:",
-    "vfile": "^6.0.3"
-  },
-  "peerDependencies": {
-    "typescript": "^7.0.2"
-  },
-  "keywords": [
-    "content",
-    "document",
-    "markdown",
-    "JSON"
-  ],
-  "license": "AGPL-3.0-or-later",
-  "publishConfig": {
-    "access": "public"
-  },
-  "scripts": {
-    "build": "bun build src/index.ts --target node --minify --external mdx-bundler --outdir=dist && tsc --emitDeclarationOnly"
-  }
+	"name": "@docube/markdown",
+	"version": "0.4.9",
+	"keywords": [
+		"JSON",
+		"content",
+		"document",
+		"markdown"
+	],
+	"license": "AGPL-3.0-or-later",
+	"files": [
+		"dist"
+	],
+	"type": "module",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"build": "bun build src/index.ts --target node --minify --external mdx-bundler --outdir=dist && tsc -p tsconfig.build.json --emitDeclarationOnly"
+	},
+	"dependencies": {
+		"@docube/common": "workspace:*",
+		"docube": "workspace:*",
+		"effect": "catalog:",
+		"rehype-raw": "^7.0.0",
+		"remark-frontmatter": "^5.0.0",
+		"remark-parse": "^11.0.0",
+		"remark-rehype": "^11.1.2",
+		"unified": "^11.0.5",
+		"vfile-matter": "^5.0.1"
+	},
+	"devDependencies": {
+		"@docube/typescript-config": "workspace:*",
+		"@types/bun": "catalog:",
+		"typescript": "catalog:",
+		"vfile": "^6.0.3"
+	},
+	"peerDependencies": {
+		"typescript": "^7.0.2"
+	}
 }
