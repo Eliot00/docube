@@ -1,5 +1,17 @@
 # @docube/mdx
 
+## 0.7.0
+
+### Minor Changes
+
+- 65760fb: Improve the `transform` API. Add a typed `contentTransform` option to normalize converted content (e.g. renaming org keywords, coercing types) before schema validation; `unsafePreValidation` is deprecated in its favor. `transform` now returns a `Promise` that resolves on success and rejects on failure, so it can be awaited and errors propagate instead of being logged.
+
+### Patch Changes
+
+- Updated dependencies [994d79c]
+- Updated dependencies [65760fb]
+  - @docube/common@0.10.0
+
 ## 0.6.7
 
 ### Patch Changes

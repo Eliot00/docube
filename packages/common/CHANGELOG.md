@@ -1,5 +1,15 @@
 # @docube/common
 
+## 0.10.0
+
+### Minor Changes
+
+- 65760fb: Improve the `transform` API. Add a typed `contentTransform` option to normalize converted content (e.g. renaming org keywords, coercing types) before schema validation; `unsafePreValidation` is deprecated in its favor. `transform` now returns a `Promise` that resolves on success and rejects on failure, so it can be awaited and errors propagate instead of being logged.
+
+### Patch Changes
+
+- 994d79c: Exclude test files from the build, so test declarations (`.test.d.ts`) are no longer emitted into `dist` or included in published packages.
+
 ## 0.9.7
 
 ### Patch Changes

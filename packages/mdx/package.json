@@ -1,43 +1,43 @@
 {
-  "name": "@docube/mdx",
-  "version": "0.6.8",
-  "type": "module",
-  "files": [
-    "dist"
-  ],
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "publishConfig": {
-    "access": "public"
-  },
-  "license": "AGPL-3.0-or-later",
-  "keywords": [
-    "content",
-    "document",
-    "MDX",
-    "JSON"
-  ],
-  "scripts": {
-    "build": "bun build src/index.ts --target node --minify --external mdx-bundler --outdir=dist && tsc --emitDeclarationOnly"
-  },
-  "devDependencies": {
-    "@docube/typescript-config": "workspace:*",
-    "@types/react": "^19.2.17",
-    "@types/react-dom": "^19.2.3",
-    "typescript": "catalog:",
-    "unified": "^11.0.5",
-    "vfile": "^6.0.3"
-  },
-  "peerDependencies": {
-    "typescript": "^7.0.2",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8"
-  },
-  "dependencies": {
-    "@docube/common": "workspace:*",
-    "docube": "workspace:*",
-    "effect": "catalog:",
-    "esbuild": "^0.28.1",
-    "mdx-bundler": "^10.1.1"
-  }
+	"name": "@docube/mdx",
+	"version": "0.7.0",
+	"keywords": [
+		"JSON",
+		"MDX",
+		"content",
+		"document"
+	],
+	"license": "AGPL-3.0-or-later",
+	"files": [
+		"dist"
+	],
+	"type": "module",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"build": "bun build src/index.ts --target node --minify --external mdx-bundler --outdir=dist && tsc --emitDeclarationOnly"
+	},
+	"dependencies": {
+		"@docube/common": "workspace:*",
+		"docube": "workspace:*",
+		"effect": "catalog:",
+		"esbuild": "^0.28.1",
+		"mdx-bundler": "^10.1.1"
+	},
+	"devDependencies": {
+		"@docube/typescript-config": "workspace:*",
+		"@types/react": "^19.2.17",
+		"@types/react-dom": "^19.2.3",
+		"typescript": "catalog:",
+		"unified": "^11.0.5",
+		"vfile": "^6.0.3"
+	},
+	"peerDependencies": {
+		"react": "^19.2.8",
+		"react-dom": "^19.2.8",
+		"typescript": "^7.0.2"
+	}
 }
